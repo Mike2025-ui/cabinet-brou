@@ -1,0 +1,129 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Configuration 2FA - Cabinet Bou</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #0F172A;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            max-width: 500px;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        .qrcode {
+            margin: 20px 0;
+        }
+        .qrcode img {
+            max-width: 200px;
+            height: auto;
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 10px;
+        }
+        input {
+            padding: 12px;
+            font-size: 18px;
+            text-align: center;
+            letter-spacing: 5px;
+            width: 180px;
+            margin: 10px 0;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+        }
+        button {
+            background: #1E3A8A;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background: #2563EB;
+        }
+        .error {
+            color: #DC2626;
+            margin: 10px 0;
+            padding: 10px;
+            background: #FEE2E2;
+            border-radius: 8px;
+        }
+        .success {
+            color: #16A34A;
+            margin: 10px 0;
+            padding: 10px;
+            background: #DCFCE7;
+            border-radius: 8px;
+        }
+        .secret {
+            background: #F1F5F9;
+            padding: 10px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 14px;
+            word-break: break-all;
+            margin: 10px 0;
+        }
+        .instruction {
+            font-size: 12px;
+            color: #64748B;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>🔐 Double authentification</h2>
+        <p>Scannez ce QR code avec Google Authenticator</p>
+        
+        <div class="qrcode">
+            {% if qrcode %}
+                <img src="{{ qrcode }}" alt="QR Code">
+            {% else %}
+                <p style="color: red;">Erreur : QR code non généré</p>
+            {% endif %}
+        </div>
+        
+        <div class="secret">
+            <strong>Clé secrète :</strong> {{ secret_key }}
+        </div>
+        
+        <p class="instruction">
+            Si le QR code ne fonctionne pas, entrez manuellement cette clé dans Google Authenticator.
+        </p>
+        
+        {% if messages %}
+            {% for message in messages %}
+                <div class="{% if message.tags == 'error' %}error{% else %}success{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+        
+        <form method="post">
+            {% csrf_token %}
+            <input type="text" name="token" placeholder="000000" maxlength="6" autocomplete="off" required>
+            <br>
+            <button type="submit">✅ Activer la 2FA</button>
+        </form>
+        
+        <p style="margin-top: 20px; font-size: 12px;">
+            <a href="/admin-cabinet-bou-2024/">⬅ Retour à l'admin</a>
+        </p>
+    </div>
+</body>
+</html>
