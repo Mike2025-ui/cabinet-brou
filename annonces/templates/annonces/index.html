@@ -22,9 +22,9 @@
   {% endif %}
 
   <body>
-    <!--   ============================================================
+    <!--    ============================================================
      BARRE DE NAVIGATION
-============================================================   -->
+============================================================    -->
     <header id="navbar">
       <div class="nav-container">
         <div class="nav-logo">
@@ -41,9 +41,9 @@
       </div>
     </header>
 
-    <!--   ============================================================
+    <!--    ============================================================
      PAGE : ACCUEIL
-============================================================   -->
+============================================================    -->
     <div id="page-accueil" class="page active">
       <section class="hero">
         <div class="hero-content">
@@ -129,9 +129,9 @@
       </section>
     </div>
 
-    <!--   ============================================================
+    <!--    ============================================================
      PAGE : ANNONCES (liste complète)
-============================================================   -->
+============================================================    -->
     <div id="page-annonces" class="page">
       <section class="annonces-section">
         <div class="container">
@@ -147,9 +147,9 @@
       </section>
     </div>
 
-    <!--   ============================================================
+    <!--    ============================================================
      PAGE : DÉTAIL D'UNE ANNONCE
-============================================================   -->
+============================================================    -->
     <div id="page-detail" class="page">
       <div class="container">
         <button class="btn-retour" onclick="retourAccueil()"><i class="fas fa-arrow-left"></i> Retour aux annonces</button>
@@ -157,9 +157,9 @@
       </div>
     </div>
 
-    <!--   ============================================================
+    <!--    ============================================================
      PAGE : NOTRE CABINET
-============================================================   -->
+============================================================    -->
     <div id="page-cabinet" class="page">
       <div class="cabinet-hero">
         <div class="container">
@@ -219,9 +219,9 @@
       </div>
     </div>
 
-    <!--   ============================================================
+    <!--    ============================================================
      PAGE : CONTACT
-============================================================   -->
+============================================================    -->
     <div id="page-contact" class="page">
       <div class="container">
         <div class="section-header">
@@ -274,9 +274,9 @@
       </div>
     </div>
 
-    <!--   ============================================================
+    <!--    ============================================================
      PAGE : ADMIN (tableau de bord)
-============================================================   -->
+============================================================    -->
     <div id="page-admin" class="page">
       <div class="container">
         <div class="section-header">
@@ -296,11 +296,11 @@
                 <label>Type de bien *</label>
                 <select id="aType">
                   <option value="terrain">Terrain</option>
-                  <option value="appartement">Location de Terres</option>
-                  <option value="commercial">Bail Emphytéotique</option>
-                  <option value="Lotissement">Partenariat Agricole</option>
+                  <option value="Location de Terres">Location de Terres</option>
+                  <option value="Bail Emphytéotique">Bail Emphytéotique</option>
+                  <option value="Partenariat Agricole">Partenariat Agricole</option>
                   <option value="Amenagement">Aménagement</option>
-                  <option value="Financement">Recherche de Financement</option>
+                  <option value="Recherche de Financement">Recherche de Financement</option>
                 </select>
               </div>
             </div>
@@ -374,12 +374,11 @@
             <label>Type</label>
             <select id="editType">
               <option value="terrain">Terrain</option>
-              <option value="maison">Maison</option>
-              <option value="appartement">Appartement</option>
-              <option value="commercial">Commercial</option>
-              <option value="Lotissement">Lotissement</option>
+              <option value="Location de Terres">Location de Terres</option>
+              <option value="Bail Emphytéotique">Bail Emphytéotique</option>
+              <option value="Partenariat Agrilcole">Partenariat Agrilcole</option>
               <option value="Amenagement">Aménagement</option>
-              <option value="Financement">Financement</option>
+              <option value="Recherche de Financement">Recherche de Financement</option>
             </select>
           </div>
           <div class="form-group">
@@ -412,16 +411,16 @@
       </div>
     </div>
 
-    <!--   ============================================================
+    <!--    ============================================================
      FOOTER
-============================================================   -->
+============================================================    -->
     <footer>
       <div class="container footer-grid">
         <div class="footer-col">
           <h4><i class="fas fa-balance-scale"></i>Cabinet Maîtres BROU DRAMA & GOURIHI TITIRO</h4>
           <p>Cabinet Juridique Spécialisé En Droit Immobilier.</p>
           <div class="social-links">
-            <a href="https://www.facebook.com/share/1EP9GVy4eY/?mibextid=wwXIfr" target="_blank"> <i class="fab fa-facebook"></i></a>
+            <a href="https://www.facebook.com/share/1EP9GVy4eY/?mibextid=wwXIfr" target="_blank"><i class="fab fa-facebook"></i></a>
             <a href="#"><i class="fab fa-twitter"></i></a>
             <a href="#"><i class="fab fa-linkedin"></i></a>
             <a href="https://wa.me/2250594133243" target="_blank"><i class="fab fa-whatsapp"></i></a>
@@ -473,9 +472,9 @@
       </div>
     </footer>
 
-    <!--   ============================================================
+    <!--    ============================================================
      MODAL : GALERIE D'IMAGES
-============================================================   -->
+============================================================    -->
     <div id="modalGalerie" class="modal hidden">
       <div class="modal-overlay" onclick="fermerGalerie()"></div>
       <div class="modal-box galerie-box">
@@ -490,9 +489,9 @@
       </div>
     </div>
 
-    <!--   ============================================================
+    <!--    ============================================================
      MODAL : FORMULAIRE DE CONTACT (JE SUIS INTÉRESSÉ)
-============================================================   -->
+============================================================    -->
     <div id="modalContact" class="modal hidden">
       <div class="modal-overlay" onclick="fermerContact()"></div>
       <div class="modal-box contact-modal-box">
@@ -529,9 +528,9 @@
       </div>
     </div>
 
-    <!--   ============================================================
+    <!--    ============================================================
      TOAST (notification succès / erreur)
-============================================================   -->
+============================================================    -->
     <div id="toast" class="toast hidden"></div>
 
     <!-- Notre script principal -->

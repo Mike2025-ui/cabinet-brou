@@ -1006,3 +1006,39 @@ INFO 2026-06-06 05:54:03,980 log "GET /api/annonces/ HTTP/1.1" 200 878
 INFO 2026-06-06 06:25:43,211 basehttp - Broken pipe from ('127.0.0.1', 58909)
 INFO 2026-06-06 06:39:51,848 autoreload Watching for file changes with StatReloader
 INFO 2026-06-06 07:05:50,919 autoreload Watching for file changes with StatReloader
+INFO 2026-06-06 07:08:36,767 log "GET / HTTP/1.1" 200 24246
+INFO 2026-06-06 07:08:37,045 log "GET /static/annonces/images/Logo_Cabinet.jpeg HTTP/1.1" 200 48890
+INFO 2026-06-06 07:08:37,054 log "GET /static/annonces/css/style.css HTTP/1.1" 200 31648
+INFO 2026-06-06 07:08:37,066 log "GET /static/annonces/js/script.js HTTP/1.1" 200 34453
+INFO 2026-06-06 07:08:37,096 log "GET /api/annonces/ HTTP/1.1" 200 878
+INFO 2026-06-06 07:08:38,580 log "GET /media/annonces/images/TERRAIN222-818x540.jpeg HTTP/1.1" 200 74576
+INFO 2026-06-06 07:08:38,610 log "GET /media/annonces/images/3878315687202727468095045239721339223342597n.png HTTP/1.1" 200 428617
+WARNING 2026-06-06 07:08:57,167 log Not Found: /favicon.ico
+WARNING 2026-06-06 07:08:57,169 log "GET /favicon.ico HTTP/1.1" 404 4801
+INFO 2026-06-06 07:09:59,813 log "GET /admin-cabinet-bou-2024/ HTTP/1.1" 302 0
+INFO 2026-06-06 07:10:57,558 log "GET /accounts/login/?next=/admin-cabinet-bou-2024/ HTTP/1.1" 200 3156
+INFO 2026-06-06 07:13:11,746 log "POST /accounts/login/?next=/admin-cabinet-bou-2024/ HTTP/1.1" 302 0
+WARNING 2026-06-06 07:13:59,607 log Forbidden (CSRF token from POST incorrect.): /accounts/login/
+WARNING 2026-06-06 07:13:59,608 log "POST /accounts/login/?next=/admin-cabinet-bou-2024/ HTTP/1.1" 403 2503
+INFO 2026-06-06 07:14:07,031 basehttp - Broken pipe from ('127.0.0.1', 65076)
+INFO 2026-06-06 07:14:14,074 log "GET /accounts/login/?next=/admin-cabinet-bou-2024/ HTTP/1.1" 200 3156
+INFO 2026-06-06 07:14:26,519 log "POST /accounts/login/?next=/admin-cabinet-bou-2024/ HTTP/1.1" 302 0
+INFO 2026-06-06 07:14:26,535 log "GET /admin-cabinet-bou-2024/ HTTP/1.1" 200 24351
+INFO 2026-06-06 07:14:26,923 log "GET /api/annonces/ HTTP/1.1" 200 878
+INFO 2026-06-06 07:25:14,204 log "GET /admin-cabinet-bou-2024/ HTTP/1.1" 200 24351
+INFO 2026-06-06 07:25:26,240 log "GET /admin-cabinet-bou-2024/ HTTP/1.1" 200 24351
+INFO 2026-06-06 07:25:33,852 log "GET /api/annonces/ HTTP/1.1" 200 878
+INFO 2026-06-06 07:26:52,305 log "GET /media/annonces/images/photo_1757580131_kYPwMgp.jpg HTTP/1.1" 200 474545
+WARNING 2026-06-06 07:28:24,760 log Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-06-06 07:28:24,760 log "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 4912
+INFO 2026-06-06 07:29:11,154 log "GET /admin-cabinet-bou-2024/ HTTP/1.1" 200 24351
+WARNING 2026-06-06 07:29:11,905 log Not Found: /.well-known/appspecific/com.chrome.devtools.json
+WARNING 2026-06-06 07:29:12,022 log "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 4912
+INFO 2026-06-06 07:29:12,030 log "GET /static/annonces/css/style.css HTTP/1.1" 200 31648
+INFO 2026-06-06 07:29:12,354 log "GET /static/annonces/images/Logo_Cabinet.jpeg HTTP/1.1" 200 48890
+INFO 2026-06-06 07:29:12,961 log "GET /static/annonces/js/script.js HTTP/1.1" 200 34490
+INFO 2026-06-06 07:29:13,589 log "GET /api/annonces/ HTTP/1.1" 200 878
+INFO 2026-06-06 07:29:14,122 log "GET /media/annonces/images/TERRAIN222-818x540.jpeg HTTP/1.1" 200 74576
+INFO 2026-06-06 07:29:14,665 log "GET /media/annonces/images/3878315687202727468095045239721339223342597n.png HTTP/1.1" 200 428617
+INFO 2026-06-06 07:29:25,132 log "GET /media/annonces/images/WhatsApp-Image-2021-09-21-at-17.01.37-818x540.jpeg HTTP/1.1" 200 107292
+INFO 2026-06-06 07:29:25,205 log "GET /media/annonces/images/c0615957abfef51c1551d43276213499.jpg HTTP/1.1" 200 51690
