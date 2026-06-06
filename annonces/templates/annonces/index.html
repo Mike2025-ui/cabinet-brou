@@ -1,298 +1,378 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cabinet Maître Brou & GOURIHI – Immobilier Juridique</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cabinet Maîtres BROU DRAMA & GOURIHI TITIRO – Immobilier/Juridique</title>
 
-  <!-- Icônes Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Icônes Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
-  <!-- Notre feuille de style principale -->
-  <link rel="stylesheet" href="{% static 'annonces/css/style.css' %}">
-</head>
+    <!-- Notre feuille de style principale -->
+    <link rel="stylesheet" href="{% static 'annonces/css/style.css' %}" />
+  </head>
 
-{% if show_admin %}
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        showPage('admin');
-    });
-</script>
-{% endif %}
-<body>
+  {% if show_admin %}
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        showPage('admin')
+      })
+    </script>
+  {% endif %}
 
-<!-- ============================================================
+  <body>
+    <!--   ============================================================
      BARRE DE NAVIGATION
-============================================================ -->
-<header id="navbar">
-  <div class="nav-container">
-    <div class="nav-logo">
-      <img src="{% static 'annonces/images/Logo_Cabinet.jpeg' %}" alt="Logo" style="height: 60px; width: 70px;">
-      <span>Cabinet <strong>MAÎTRE Brou & GOURIHI</strong></span>
-    </div>
-    <nav class="nav-links" id="navLinks">
-      <a href="#accueil"   onclick="showPage('accueil')">Accueil</a>
-      <a href="#annonces"  onclick="showPage('annonces')">Annonces</a>
-      <a href="#cabinet"   onclick="showPage('cabinet')">Notre Cabinet</a>
-      <a href="#contact"   onclick="showPage('contact')">Contact</a>
-    </nav>
-    <button class="hamburger" id="hamburgerBtn" onclick="toggleMenu()">
-      <i class="fas fa-bars"></i>
-    </button>
-  </div>
-</header>
+============================================================   -->
+    <header id="navbar">
+      <div class="nav-container">
+        <div class="nav-logo">
+          <img src="{% static 'annonces/images/Logo_Cabinet.jpeg' %}" alt="Logo" style="height: 60px; width: 70px;" />
+          <span>Cabinet <strong>Maîtres BROU DRAMA & GOURIHI TITIRO</strong></span>
+        </div>
+        <nav class="nav-links" id="navLinks">
+          <a href="#accueil" onclick="showPage('accueil')">Accueil</a>
+          <a href="#annonces" onclick="showPage('annonces')">Annonces</a>
+          <a href="#cabinet" onclick="showPage('cabinet')">Notre Cabinet</a>
+          <a href="#contact" onclick="showPage('contact')">Contact</a>
+        </nav>
+        <button class="hamburger" id="hamburgerBtn" onclick="toggleMenu()"><i class="fas fa-bars"></i></button>
+      </div>
+    </header>
 
-<!-- ============================================================
+    <!--   ============================================================
      PAGE : ACCUEIL
-============================================================ -->
-<div id="page-accueil" class="page active">
-  <section class="hero">
-    <div class="hero-content">
-      <p class="hero-tag">Cabinet Juridique Immobilier</p>
-      <h1>Trouvez votre <span class="highlight">bien immobilier</span><br/>en toute sécurité juridique</h1>
-      <p class="hero-sub">
-        Achat, vente, litiges fonciers — nous vous accompagnons à chaque étape.
-      </p>
-      <div class="hero-search">
-        <input type="text" id="searchInput" placeholder="Rechercher par ville, quartier…" oninput="filterAnnonces()" />
-        <button onclick="filterAnnonces()"><i class="fas fa-search"></i> Rechercher</button>
-      </div>
-    </div>
-    <div class="hero-stats">
-      <div class="stat"><span>120+</span><p>Annonces actives</p></div>
-      <div class="stat"><span>8 ans</span><p>D'expérience</p></div>
-      <div class="stat"><span>500+</span><p>Clients satisfaits</p></div>
-    </div>
-  </section>
-
-  <section class="filtres-section">
-    <div class="container">
-      <div class="filtres-bar">
-        <button class="filtre-btn active" onclick="setFiltre(this,'tous')">Tous</button>
-        <button class="filtre-btn" onclick="setFiltre(this,'terrain')">Terrains</button>
-        <button class="filtre-btn" onclick="setFiltre(this,'Lotissement')">Lotissement</button>
-        <button class="filtre-btn" onclick="setFiltre(this,'Amenagement')">Amenagement</button>
-        <button class="filtre-btn" onclick="setFiltre(this,'Financement')">Financement</button>
-      </div>
-    </div>
-  </section>
-
-  <section class="annonces-section" id="accueil">
-    <div class="container">
-      <div class="section-header">
-        <h2>Nos Annonces Immobilières</h2>
-        <p>Découvrez notre sélection de biens disponibles</p>
-      </div>
-      <div class="annonces-grid" id="annoncesGrid"></div>
-      <div class="no-result hidden" id="noResult">
-        <i class="fas fa-search"></i>
-        <p>Aucune annonce ne correspond à votre recherche.</p>
-      </div>
-    </div>
-  </section>
-
-  <section class="why-us">
-    <div class="container">
-      <div class="section-header">
-        <h2>Pourquoi choisir le Cabinet Maître Brou & GOURIHI ?</h2>
-      </div>
-      <div class="why-grid">
-        <div class="why-card">
-          <i class="fas fa-shield-alt"></i>
-          <h3>Sécurité juridique</h3>
-          <p>Chaque transaction est encadrée par nos experts en droit immobilier.</p>
+============================================================   -->
+    <div id="page-accueil" class="page active">
+      <section class="hero">
+        <div class="hero-content">
+          <p class="hero-tag">Cabinet Juridique Immobilier</p>
+          <h1>Trouvez votre <span class="highlight">bien immobilier</span><br />en toute sécurité juridique</h1>
+          <p class="hero-sub">Assistance Judiciaire, Location de Grandes Parcelles, Bail Emphytéotique, Partenariat Agricole, Achat, Vente, Litiges Fonciers — Nous Vous Accompagnons A Chaque Etape.</p>
+          <div class="hero-search">
+            <input type="text" id="searchInput" placeholder="Rechercher par ville, quartier…" oninput="filterAnnonces()" />
+            <button onclick="filterAnnonces()"><i class="fas fa-search"></i> Rechercher</button>
+          </div>
         </div>
-        <div class="why-card">
-          <i class="fas fa-handshake"></i>
-          <h3>Accompagnement personnalisé</h3>
-          <p>Un conseiller dédié vous suit du premier contact à la signature.</p>
+        <div class="hero-stats">
+          <div class="stat">
+            <span>120+</span>
+            <p>Annonces Actives</p>
+          </div>
+          <div class="stat">
+            <span>8 ans</span>
+            <p>D'Expérience</p>
+          </div>
+          <div class="stat">
+            <span>500+</span>
+            <p>Clients Satisfaits</p>
+          </div>
         </div>
-        <div class="why-card">
-          <i class="fas fa-certificate"></i>
-          <h3>Documents certifiés</h3>
-          <p>Tous les titres fonciers sont vérifiés et authentifiés.</p>
-        </div>
-        <div class="why-card">
-          <i class="fas fa-clock"></i>
-          <h3>Réactivité</h3>
-          <p>Réponse garantie sous 24 h pour toute demande.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-</div>
+      </section>
 
-<!-- ============================================================
+      <section class="filtres-section">
+        <div class="container">
+          <div class="filtres-bar">
+            <button class="filtre-btn active" onclick="setFiltre(this,'tous')">Tous</button>
+            <button class="filtre-btn" onclick="setFiltre(this,'terrain')">Terrains</button>
+            <button class="filtre-btn" onclick="setFiltre(this,'Locations de Terres Agricole')">Location de Terres Agricole</button>
+            <button class="filtre-btn" onclick="setFiltre(this,'Bail Emphytéotique')">Bail Emphytéotique</button>
+            <button class="filtre-btn" onclick="setFiltre(this,'Partenariat Agricole')">Partenariat Agricole</button>
+            <button class="filtre-btn" onclick="setFiltre(this,'Recherche de Financement')">Recherche de Financement</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="annonces-section" id="accueil">
+        <div class="container">
+          <div class="section-header">
+            <h2>Nos Annonces Immobilières</h2>
+            <p>Découvrez notre sélection de biens disponibles</p>
+          </div>
+          <div class="annonces-grid" id="annoncesGrid"></div>
+          <div class="no-result hidden" id="noResult">
+            <i class="fas fa-search"></i>
+            <p>Aucune annonce ne correspond à votre recherche.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="why-us">
+        <div class="container">
+          <div class="section-header">
+            <h2>Pourquoi choisir le Cabinet Maîtres BROU DRAMA & GOURIHI TITIRO ?</h2>
+          </div>
+          <div class="why-grid">
+            <div class="why-card">
+              <i class="fas fa-shield-alt"></i>
+              <h3>Assistance Judiciaire / Sécurité Juridique</h3>
+              <p>Chaque Transaction Est Encadrée Par Nos Experts En Droit Immobilier.</p>
+            </div>
+            <div class="why-card">
+              <i class="fas fa-handshake"></i>
+              <h3>Accompagnement Personnalisé</h3>
+              <p>Un Avocat Ou Un Conseiller Dédié Vous Suit Du Premier Contact à la Signature.</p>
+            </div>
+            <div class="why-card">
+              <i class="fas fa-certificate"></i>
+              <h3>Documents Certifiés</h3>
+              <p>Tous Les Titres Fonciers Sont Vérifiés Et Authentifiés.</p>
+            </div>
+            <div class="why-card">
+              <i class="fas fa-clock"></i>
+              <h3>Réactivité</h3>
+              <p>Réponse Garantie Sous 24H Pour Toute Demande.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!--   ============================================================
      PAGE : ANNONCES (liste complète)
-============================================================ -->
-<div id="page-annonces" class="page">
-  <section class="annonces-section">
-    <div class="container">
-      <div class="section-header">
-        <h2>Toutes les Annonces</h2>
-        <p>Parcourez l'ensemble de notre portefeuille immobilier</p>
-      </div>
-      <div class="filtres-bar">
-        <input type="text" id="searchInput2" placeholder="Rechercher…" oninput="filterAnnonces2()" class="search-inline" />
-      </div>
-      <div class="annonces-grid" id="annoncesGrid2"></div>
+============================================================   -->
+    <div id="page-annonces" class="page">
+      <section class="annonces-section">
+        <div class="container">
+          <div class="section-header">
+            <h2>Toutes Les Annonces</h2>
+            <p>Parcourez l'ensemble de notre portefeuille immobilier</p>
+          </div>
+          <div class="filtres-bar">
+            <input type="text" id="searchInput2" placeholder="Rechercher…" oninput="filterAnnonces2()" class="search-inline" />
+          </div>
+          <div class="annonces-grid" id="annoncesGrid2"></div>
+        </div>
+      </section>
     </div>
-  </section>
-</div>
 
-<!-- ============================================================
+    <!--   ============================================================
      PAGE : DÉTAIL D'UNE ANNONCE
-============================================================ -->
-<div id="page-detail" class="page">
-  <div class="container">
-    <button class="btn-retour" onclick="retourAccueil()">
-      <i class="fas fa-arrow-left"></i> Retour aux annonces
-    </button>
-    <div id="detailContent"></div>
-  </div>
-</div>
+============================================================   -->
+    <div id="page-detail" class="page">
+      <div class="container">
+        <button class="btn-retour" onclick="retourAccueil()"><i class="fas fa-arrow-left"></i> Retour aux annonces</button>
+        <div id="detailContent"></div>
+      </div>
+    </div>
 
-<!-- ============================================================
+    <!--   ============================================================
      PAGE : NOTRE CABINET
-============================================================ -->
-<div id="page-cabinet" class="page">
-  <div class="cabinet-hero">
-    <div class="container">
-      <h1><i class="fas fa-balance-scale"></i>Cabinet Maître Brou & GOURIHI</h1>
-      <p>Votre partenaire juridique de confiance dans l'immobilier</p>
+============================================================   -->
+    <div id="page-cabinet" class="page">
+      <div class="cabinet-hero">
+        <div class="container">
+          <h1><i class="fas fa-balance-scale"></i>Cabinet Maîtres BROU DRAMA & GOURIHI TITIRO</h1>
+          <p>Votre partenaire juridique de confiance dans l'immobilier</p>
+        </div>
+      </div>
+      <div class="container">
+        <section class="cabinet-section">
+          <div class="cabinet-text">
+            <h2>À Propos Du Cabinet</h2>
+            <p>
+              Le <strong>Cabinet Maîtres BROU DRAMA & GOURIHI TITIRO</strong> est un cabinet juridique spécialisé dans le droit immobilier, fondé par Maîtres BROU DRAMA et GOURIHI TITIRO, avocat inscrit au Barreau depuis plus de <strong>8 ans</strong>. Notre mission est d'offrir une assistance juridique complète et transparente pour toutes vos transactions et litiges fonciers.
+            </p>
+            <p>Nous intervenons aussi bien pour des particuliers que pour des entreprises, garantissant la conformité légale de chaque acte immobilier.</p>
+          </div>
+          <div class="cabinet-img">
+            <img src="https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=600&q=80" alt="Bureau du cabinet" />
+          </div>
+        </section>
+
+        <section class="services-section">
+          <h2>Nos Services</h2>
+          <div class="services-grid">
+            <div class="service-card">
+              <i class="fas fa-gavel"></i>
+              <h3>Litiges Fonciers</h3>
+              <p>Règlement Amiable ou Judiciaire De Tous Conflits Liés à La Propriété Immobilière.</p>
+            </div>
+            <div class="service-card">
+              <i class="fas fa-file-contract"></i>
+              <h3>Rédaction d'Actes</h3>
+              <p>Compromis De Vente, Promesses, Baux Commerciaux Et Résidentiels.</p>
+            </div>
+            <div class="service-card">
+              <i class="fas fa-map-marked-alt"></i>
+              <h3>Vente De Terrains</h3>
+              <p>Mise En Vente Sécurisée Avec Vérification Des Titres Fonciers.</p>
+            </div>
+            <div class="service-card">
+              <i class="fas fa-search"></i>
+              <h3>Due Diligence</h3>
+              <p>Audit Juridique Complet Avant Tout Achat Ou Investissement Immobilier.</p>
+            </div>
+            <div class="service-card">
+              <i class="fas fa-home"></i>
+              <h3>Gestion Locative</h3>
+              <p>Assistance Dans La Rédaction Et La Gestion De Vos Contrats De Location.</p>
+            </div>
+            <div class="service-card">
+              <i class="fas fa-building"></i>
+              <h3>Droit De La Construction</h3>
+              <p>Accompagnement Juridique Pour Tous Vos Projets De Construction.</p>
+            </div>
+          </div>
+        </section>
+      </div>
     </div>
-  </div>
-  <div class="container">
-    <section class="cabinet-section">
-      <div class="cabinet-text">
-        <h2>À propos du Cabinet</h2>
-        <p>
-          Le <strong>Cabinet Maître Brou & GOURIHI</strong> est un cabinet juridique spécialisé
-          dans le droit immobilier, fondé par Maître Brou et Maître GOURIHI, avocat inscrit au Barreau depuis plus
-          de <strong>8 ans</strong>. Notre mission est d'offrir une assistance juridique
-          complète et transparente pour toutes vos transactions et litiges fonciers.
-        </p>
-        <p>
-          Nous intervenons aussi bien pour des particuliers que pour des entreprises,
-          garantissant la conformité légale de chaque acte immobilier.
-        </p>
-      </div>
-      <div class="cabinet-img">
-        <img src="https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=600&q=80"
-             alt="Bureau du cabinet" />
-      </div>
-    </section>
 
-    <section class="services-section">
-      <h2>Nos Services</h2>
-      <div class="services-grid">
-        <div class="service-card">
-          <i class="fas fa-gavel"></i>
-          <h3>Litiges fonciers</h3>
-          <p>Règlement amiable ou judiciaire de tous conflits liés à la propriété immobilière.</p>
-        </div>
-        <div class="service-card">
-          <i class="fas fa-file-contract"></i>
-          <h3>Rédaction d'actes</h3>
-          <p>Compromis de vente, promesses, baux commerciaux et résidentiels.</p>
-        </div>
-        <div class="service-card">
-          <i class="fas fa-map-marked-alt"></i>
-          <h3>Vente de terrains</h3>
-          <p>Mise en vente sécurisée avec vérification des titres fonciers.</p>
-        </div>
-        <div class="service-card">
-          <i class="fas fa-search"></i>
-          <h3>Due diligence</h3>
-          <p>Audit juridique complet avant tout achat ou investissement immobilier.</p>
-        </div>
-        <div class="service-card">
-          <i class="fas fa-home"></i>
-          <h3>Gestion locative</h3>
-          <p>Assistance dans la rédaction et la gestion de vos contrats de location.</p>
-        </div>
-        <div class="service-card">
-          <i class="fas fa-building"></i>
-          <h3>Droit de la construction</h3>
-          <p>Accompagnement juridique pour tous vos projets de construction.</p>
-        </div>
-      </div>
-    </section>
-  </div>
-</div>
-
-<!-- ============================================================
+    <!--   ============================================================
      PAGE : CONTACT
-============================================================ -->
-<div id="page-contact" class="page">
-  <div class="container">
-    <div class="section-header">
-      <h2><i class="fas fa-phone-alt"></i> Contactez-nous</h2>
-      <p>Notre équipe est disponible du lundi au vendredi, 8h – 18h</p>
-    </div>
-    <div class="contact-layout">
-      <div class="contact-info">
-        <h3>Informations de contact</h3>
-        <div class="info-item"><i class="fas fa-map-marker-alt"></i> <span>123 Rue de la Justice, Abidjan</span></div>
-        <div class="info-item"><i class="fas fa-phone"></i> <span>+225 07 00 00 00 00</span></div>
-        <div class="info-item"><i class="fas fa-envelope"></i> <span>contact@cabinetbou.ci</span></div>
-        <div class="info-item"><i class="fab fa-whatsapp"></i>
-          <a href="https://wa.me/2250700000000?text=Bonjour Cabinet Bou, j'ai une question." target="_blank">
-            Discuter sur WhatsApp
-          </a>
+============================================================   -->
+    <div id="page-contact" class="page">
+      <div class="container">
+        <div class="section-header">
+          <h2><i class="fas fa-phone-alt"></i> Contactez-nous</h2>
+          <p>Notre équipe est disponible du lundi au vendredi, 8h – 18h</p>
         </div>
-        <div class="info-item"><i class="fas fa-clock"></i> <span>Lun – Ven : 8h00 – 18h00</span></div>
-      </div>
-      <div class="contact-form-box">
-        <h3>Envoyer un message</h3>
-        <form id="contactForm" onsubmit="envoyerContact(event)">
-          <div class="form-group">
-            <label>Prénom</label>
-            <input type="text" id="cPrenom" placeholder="Votre prénom" required />
+        <div class="contact-layout">
+          <div class="contact-info">
+            <h3>Informations de contact</h3>
+            <div class="info-item">
+              <i class="fas fa-map-marker-alt"></i> <span>Côte d'Ivoire, Abidjan Cocody Angré Terminus des Bus 81/82 immeuble Zarour 1ère étage</span>
+            </div>
+            <div class="info-item">
+              <i class="fas fa-phone"></i> <span>+225 05 94 13 32 43</span>
+            </div>
+            <div class="info-item">
+              <i class="fas fa-envelope"></i> <span>cabinet2maitrebrou@gmail.com</span>
+            </div>
+            <div class="info-item">
+              <i class="fab fa-whatsapp"></i>
+              <a href="https://wa.me/2250594133243?text=Bonjour Cabinet Maîtres BROU DRAMA & GOURIHI TITIRO, Bonjour, je souhaite un renseignement." target="_blank">Discuter sur WhatsApp</a>
+            </div>
+            <div class="info-item">
+              <i class="fas fa-clock"></i> <span>Lun – Ven : 8h00 – 18h00</span>
+            </div>
           </div>
-          <div class="form-group">
-            <label>Nom</label>
-            <input type="text" id="cNom" placeholder="Votre nom" required />
+          <div class="contact-form-box">
+            <h3>Envoyer un message</h3>
+            <form id="contactForm" onsubmit="envoyerContact(event)">
+              <div class="form-group">
+                <label>Prénom</label>
+                <input type="text" id="cPrenom" placeholder="Votre prénom" required />
+              </div>
+              <div class="form-group">
+                <label>Nom</label>
+                <input type="text" id="cNom" placeholder="Votre nom" required />
+              </div>
+              <div class="form-group">
+                <label>Téléphone</label>
+                <input type="tel" id="cTel" placeholder="+225 07 XX XX XX XX" required />
+              </div>
+              <div class="form-group">
+                <label>Message</label>
+                <textarea id="cMessage" rows="4" placeholder="Votre message…" required></textarea>
+              </div>
+              <button type="submit" class="btn-primary"><i class="fas fa-paper-plane"></i> Envoyer</button>
+            </form>
           </div>
-          <div class="form-group">
-            <label>Téléphone</label>
-            <input type="tel" id="cTel" placeholder="+225 07 XX XX XX XX" required />
-          </div>
-          <div class="form-group">
-            <label>Message</label>
-            <textarea id="cMessage" rows="4" placeholder="Votre message…" required></textarea>
-          </div>
-          <button type="submit" class="btn-primary">
-            <i class="fas fa-paper-plane"></i> Envoyer
-          </button>
-        </form>
+        </div>
       </div>
     </div>
-  </div>
-</div>
 
-<!-- ============================================================
+    <!--   ============================================================
      PAGE : ADMIN (tableau de bord)
-============================================================ -->
-<div id="page-admin" class="page">
-  <div class="container">
-    <div class="section-header">
-      <h2><i class="fas fa-tachometer-alt"></i> Tableau de Bord Admin</h2>
-      <p>Gérez vos annonces immobilières — connexion sécurisée</p>
+============================================================   -->
+    <div id="page-admin" class="page">
+      <div class="container">
+        <div class="section-header">
+          <h2><i class="fas fa-tachometer-alt"></i> Tableau de Bord Admin</h2>
+          <p>Gérez vos annonces immobilières — connexion sécurisée</p>
+        </div>
+
+        <div class="admin-card">
+          <h3><i class="fas fa-plus-circle"></i> Ajouter une nouvelle annonce</h3>
+          <form id="adminForm" onsubmit="ajouterAnnonce(event)" enctype="multipart/form-data">
+            <div class="form-row">
+              <div class="form-group">
+                <label>Titre de l'annonce *</label>
+                <input type="text" id="aTitle" placeholder="Ex: Terrain 500m² Cocody" required />
+              </div>
+              <div class="form-group">
+                <label>Type de bien *</label>
+                <select id="aType">
+                  <option value="terrain">Terrain</option>
+                  <option value="appartement">Location de Terres</option>
+                  <option value="commercial">Bail Emphytéotique</option>
+                  <option value="Lotissement">Partenariat Agricole</option>
+                  <option value="Amenagement">Aménagement</option>
+                  <option value="Financement">Recherche de Financement</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Ville *</label>
+                <input type="text" id="aVille" placeholder="Ex: Abidjan" required />
+              </div>
+              <div class="form-group">
+                <label>Quartier *</label>
+                <input type="text" id="aQuartier" placeholder="Ex: Cocody" required />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Prix (FCFA) *</label>
+                <input type="text" id="aPrix" placeholder="Ex: 25 000 000" required />
+              </div>
+              <div class="form-group">
+                <label>Surface (m²)</label>
+                <input type="text" id="aSurface" placeholder="Ex: 500" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Description *</label>
+              <textarea id="aDesc" rows="3" placeholder="Description détaillée du bien…" required></textarea>
+            </div>
+
+            <div class="form-group">
+              <label>Image principale *</label>
+              <input type="file" id="aImgMain" accept="image/*" required />
+              <small style="display: block; margin-top: 5px; color: #64748B;"><i class="fas fa-info-circle"></i> Formats acceptés : JPG, PNG, GIF. Taille max : 10 MB</small>
+            </div>
+
+            <div class="form-group">
+              <label>Images secondaires (plusieurs photos)</label>
+              <input type="file" id="aImgsSecond" accept="image/*" multiple />
+              <small style="display: block; margin-top: 5px; color: #64748B;"><i class="fas fa-info-circle"></i> Sélectionnez plusieurs images (Ctrl+clic). Taille max par fichier : 10 MB</small>
+            </div>
+
+            <div class="form-group">
+              <label>Documents (PDF, images, etc.)</label>
+              <input type="file" id="aDocs" accept=".pdf,.jpg,.png,.docx" multiple />
+              <small style="display: block; margin-top: 5px; color: #64748B;"><i class="fas fa-info-circle"></i> Formats acceptés : PDF, JPG, PNG, DOCX. Taille max : 10 MB</small>
+            </div>
+
+            <button type="submit" class="btn-primary"><i class="fas fa-save"></i> Publier l'annonce</button>
+          </form>
+        </div>
+
+        <div class="admin-card">
+          <h3><i class="fas fa-list"></i> Annonces publiées (<span id="nbAnnonces">0</span>)</h3>
+          <div id="adminList"></div>
+        </div>
+      </div>
     </div>
 
-    <div class="admin-card">
-      <h3><i class="fas fa-plus-circle"></i> Ajouter une nouvelle annonce</h3>
-      <form id="adminForm" onsubmit="ajouterAnnonce(event)" enctype="multipart/form-data">
-        <div class="form-row">
+    <!-- Modal de modification d'annonce -->
+    <div id="modalEditAnnonce" class="modal hidden">
+      <div class="modal-overlay" onclick="fermerEditAnnonce()"></div>
+      <div class="modal-box edit-annonce-box">
+        <button class="modal-close" onclick="fermerEditAnnonce()"><i class="fas fa-times"></i></button>
+        <h3>Modifier l'annonce</h3>
+        <form id="editAnnonceForm" onsubmit="soumettreEditAnnonce(event)" enctype="multipart/form-data">
+          <input type="hidden" id="editId" />
           <div class="form-group">
-            <label>Titre de l'annonce *</label>
-            <input type="text" id="aTitle" placeholder="Ex: Terrain 500m² Cocody" required />
+            <label>Titre</label>
+            <input type="text" id="editTitre" required />
           </div>
           <div class="form-group">
-            <label>Type de bien *</label>
-            <select id="aType">
+            <label>Type</label>
+            <select id="editType">
               <option value="terrain">Terrain</option>
               <option value="maison">Maison</option>
               <option value="appartement">Appartement</option>
@@ -302,240 +382,159 @@
               <option value="Financement">Financement</option>
             </select>
           </div>
-        </div>
-        <div class="form-row">
           <div class="form-group">
-            <label>Ville *</label>
-            <input type="text" id="aVille" placeholder="Ex: Abidjan" required />
+            <label>Ville</label>
+            <input type="text" id="editVille" required />
           </div>
           <div class="form-group">
-            <label>Quartier *</label>
-            <input type="text" id="aQuartier" placeholder="Ex: Cocody" required />
-          </div>
-        </div>
-        <div class="form-row">
-          <div class="form-group">
-            <label>Prix (FCFA) *</label>
-            <input type="text" id="aPrix" placeholder="Ex: 25 000 000" required />
+            <label>Quartier</label>
+            <input type="text" id="editQuartier" required />
           </div>
           <div class="form-group">
-            <label>Surface (m²)</label>
-            <input type="text" id="aSurface" placeholder="Ex: 500" />
+            <label>Prix</label>
+            <input type="text" id="editPrix" required />
           </div>
-        </div>
-        <div class="form-group">
-          <label>Description *</label>
-          <textarea id="aDesc" rows="3" placeholder="Description détaillée du bien…" required></textarea>
-        </div>
-        
-        <div class="form-group">
-          <label>Image principale *</label>
-          <input type="file" id="aImgMain" accept="image/*" required />
-          <small style="display: block; margin-top: 5px; color: #64748B;">
-            <i class="fas fa-info-circle"></i> Formats acceptés : JPG, PNG, GIF. Taille max : 10 MB
-          </small>
-        </div>
-        
-        <div class="form-group">
-          <label>Images secondaires (plusieurs photos)</label>
-          <input type="file" id="aImgsSecond" accept="image/*" multiple />
-          <small style="display: block; margin-top: 5px; color: #64748B;">
-            <i class="fas fa-info-circle"></i> Sélectionnez plusieurs images (Ctrl+clic). Taille max par fichier : 10 MB
-          </small>
-        </div>
-        
-        <div class="form-group">
-          <label>Documents (PDF, images, etc.)</label>
-          <input type="file" id="aDocs" accept=".pdf,.jpg,.png,.docx" multiple />
-          <small style="display: block; margin-top: 5px; color: #64748B;">
-            <i class="fas fa-info-circle"></i> Formats acceptés : PDF, JPG, PNG, DOCX. Taille max : 10 MB
-          </small>
-        </div>
-        
-        <button type="submit" class="btn-primary">
-          <i class="fas fa-save"></i> Publier l'annonce
-        </button>
-      </form>
+          <div class="form-group">
+            <label>Surface</label>
+            <input type="text" id="editSurface" />
+          </div>
+          <div class="form-group">
+            <label>Description</label>
+            <textarea id="editDescription" rows="3" required></textarea>
+          </div>
+          <div class="form-group">
+            <label>Nouvelle image principale (laisser vide pour garder l'actuelle)</label>
+            <input type="file" id="editImgPrincipale" accept="image/*" />
+            <small style="display: block; margin-top: 5px; color: #64748B;"><i class="fas fa-info-circle"></i> Taille max : 10 MB</small>
+          </div>
+          <button type="submit" class="btn-primary"><i class="fas fa-save"></i> Enregistrer</button>
+        </form>
+      </div>
     </div>
 
-    <div class="admin-card">
-      <h3><i class="fas fa-list"></i> Annonces publiées (<span id="nbAnnonces">0</span>)</h3>
-      <div id="adminList"></div>
-    </div>
-  </div>
-</div>
-
-<!-- Modal de modification d'annonce -->
-<div id="modalEditAnnonce" class="modal hidden">
-  <div class="modal-overlay" onclick="fermerEditAnnonce()"></div>
-  <div class="modal-box edit-annonce-box">
-    <button class="modal-close" onclick="fermerEditAnnonce()"><i class="fas fa-times"></i></button>
-    <h3>Modifier l'annonce</h3>
-    <form id="editAnnonceForm" onsubmit="soumettreEditAnnonce(event)" enctype="multipart/form-data">
-      <input type="hidden" id="editId" />
-      <div class="form-group">
-        <label>Titre</label>
-        <input type="text" id="editTitre" required />
-      </div>
-      <div class="form-group">
-        <label>Type</label>
-        <select id="editType">
-          <option value="terrain">Terrain</option>
-          <option value="maison">Maison</option>
-          <option value="appartement">Appartement</option>
-          <option value="commercial">Commercial</option>
-          <option value="Lotissement">Lotissement</option>
-          <option value="Amenagement">Aménagement</option>
-          <option value="Financement">Financement</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>Ville</label>
-        <input type="text" id="editVille" required />
-      </div>
-      <div class="form-group">
-        <label>Quartier</label>
-        <input type="text" id="editQuartier" required />
-      </div>
-      <div class="form-group">
-        <label>Prix</label>
-        <input type="text" id="editPrix" required />
-      </div>
-      <div class="form-group">
-        <label>Surface</label>
-        <input type="text" id="editSurface" />
-      </div>
-      <div class="form-group">
-        <label>Description</label>
-        <textarea id="editDescription" rows="3" required></textarea>
-      </div>
-      <div class="form-group">
-        <label>Nouvelle image principale (laisser vide pour garder l'actuelle)</label>
-        <input type="file" id="editImgPrincipale" accept="image/*" />
-        <small style="display: block; margin-top: 5px; color: #64748B;">
-          <i class="fas fa-info-circle"></i> Taille max : 10 MB
-        </small>
-      </div>
-      <button type="submit" class="btn-primary"><i class="fas fa-save"></i> Enregistrer</button>
-    </form>
-  </div>
-</div>
-
-<!-- ============================================================
+    <!--   ============================================================
      FOOTER
-============================================================ -->
-<footer>
-  <div class="container footer-grid">
-    <div class="footer-col">
-      <h4><i class="fas fa-balance-scale"></i>Cabinet Maître Brou & GOURIHI</h4>
-      <p>Cabinet juridique spécialisé en droit immobilier depuis 2016.</p>
-      <div class="social-links">
-        <a href="#"><i class="fab fa-facebook"></i></a>
-        <a href="#"><i class="fab fa-twitter"></i></a>
-        <a href="#"><i class="fab fa-linkedin"></i></a>
-        <a href="https://wa.me/2250700000000" target="_blank"><i class="fab fa-whatsapp"></i></a>
+============================================================   -->
+    <footer>
+      <div class="container footer-grid">
+        <div class="footer-col">
+          <h4><i class="fas fa-balance-scale"></i>Cabinet Maîtres BROU DRAMA & GOURIHI TITIRO</h4>
+          <p>Cabinet Juridique Spécialisé En Droit Immobilier.</p>
+          <div class="social-links">
+            <a href="https://www.facebook.com/share/1EP9GVy4eY/?mibextid=wwXIfr" target="_blank"> <i class="fab fa-facebook"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-linkedin"></i></a>
+            <a href="https://wa.me/2250594133243" target="_blank"><i class="fab fa-whatsapp"></i></a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>Navigation</h4>
+          <ul>
+            <li>
+              <a href="#" onclick="showPage('accueil')">Accueil</a>
+            </li>
+            <li>
+              <a href="#" onclick="showPage('annonces')">Annonces</a>
+            </li>
+            <li>
+              <a href="#" onclick="showPage('cabinet')">Notre Cabinet</a>
+            </li>
+            <li>
+              <a href="#" onclick="showPage('contact')">Contact</a>
+            </li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Nos Services</h4>
+          <ul>
+            <li>Litiges fonciers</li>
+            <li>Vente de terrains</li>
+            <li>Rédaction d'actes</li>
+            <li>Due diligence</li>
+            <li>Gestion locative</li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Contact rapide</h4>
+          <p>
+            <i class="fas fa-phone"></i> +225 05 94 13 32 43
+          </p>
+          <p>
+            <i class="fas fa-envelope"></i> cabinet2maitrebrou@gmail.com
+          </p>
+          <p>
+            <i class="fas fa-map-marker-alt"></i> Côte d'Ivoire, Abidjan Cocody Angré Terminus Des Bus 81/82 immeuble Zarour 1ère étage
+          </p>
+          <a class="btn-whatsapp-footer" href="https://wa.me/2250594133243?text=Bonjour, je souhaite un renseignement." target="_blank"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+        </div>
       </div>
-    </div>
-    <div class="footer-col">
-      <h4>Navigation</h4>
-      <ul>
-        <li><a href="#" onclick="showPage('accueil')">Accueil</a></li>
-        <li><a href="#" onclick="showPage('annonces')">Annonces</a></li>
-        <li><a href="#" onclick="showPage('cabinet')">Notre Cabinet</a></li>
-        <li><a href="#" onclick="showPage('contact')">Contact</a></li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <h4>Nos Services</h4>
-      <ul>
-        <li>Litiges fonciers</li>
-        <li>Vente de terrains</li>
-        <li>Rédaction d'actes</li>
-        <li>Due diligence</li>
-        <li>Gestion locative</li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <h4>Contact rapide</h4>
-      <p><i class="fas fa-phone"></i> +225 07 00 00 00 00</p>
-      <p><i class="fas fa-envelope"></i> contact@cabinetbou.ci</p>
-      <p><i class="fas fa-map-marker-alt"></i> Abidjan, Côte d'Ivoire</p>
-      <a class="btn-whatsapp-footer"
-         href="https://wa.me/2250700000000?text=Bonjour, je souhaite un renseignement."
-         target="_blank">
-        <i class="fab fa-whatsapp"></i> WhatsApp
-      </a>
-    </div>
-  </div>
-  <div class="footer-bottom">
-    <p>© 2026 Cabinet Maître Brou & GOURIHI – Tous droits réservés | Conçu avec ❤️</p>
-  </div>
-</footer>
+      <div class="footer-bottom">
+        <p>© 2026 Cabinet Maîtres BROU DRAMA & GOURIHI TITIRO – Tous droits réservés | Conçu avec ❤️</p>
+      </div>
+    </footer>
 
-<!-- ============================================================
+    <!--   ============================================================
      MODAL : GALERIE D'IMAGES
-============================================================ -->
-<div id="modalGalerie" class="modal hidden">
-  <div class="modal-overlay" onclick="fermerGalerie()"></div>
-  <div class="modal-box galerie-box">
-    <button class="modal-close" onclick="fermerGalerie()"><i class="fas fa-times"></i></button>
-    <img id="galerieImg" src="" alt="Image" />
-    <div class="galerie-nav">
-      <button onclick="galeriePrev()"><i class="fas fa-chevron-left"></i></button>
-      <span id="galerieCount">1 / 1</span>
-      <button onclick="galerieNext()"><i class="fas fa-chevron-right"></i></button>
+============================================================   -->
+    <div id="modalGalerie" class="modal hidden">
+      <div class="modal-overlay" onclick="fermerGalerie()"></div>
+      <div class="modal-box galerie-box">
+        <button class="modal-close" onclick="fermerGalerie()"><i class="fas fa-times"></i></button>
+        <img id="galerieImg" src="" alt="Image" />
+        <div class="galerie-nav">
+          <button onclick="galeriePrev()"><i class="fas fa-chevron-left"></i></button>
+          <span id="galerieCount">1 / 1</span>
+          <button onclick="galerieNext()"><i class="fas fa-chevron-right"></i></button>
+        </div>
+        <div class="galerie-thumbs" id="galerieThumbs"></div>
+      </div>
     </div>
-    <div class="galerie-thumbs" id="galerieThumbs"></div>
-  </div>
-</div>
 
-<!-- ============================================================
+    <!--   ============================================================
      MODAL : FORMULAIRE DE CONTACT (JE SUIS INTÉRESSÉ)
-============================================================ -->
-<div id="modalContact" class="modal hidden">
-  <div class="modal-overlay" onclick="fermerContact()"></div>
-  <div class="modal-box contact-modal-box">
-    <button class="modal-close" onclick="fermerContact()"><i class="fas fa-times"></i></button>
-    <div class="contact-modal-header">
-      <i class="fas fa-heart"></i>
-      <h3>Je suis intéressé</h3>
-      <p>Annonce : <strong id="modalAnnonceId">–</strong></p>
+============================================================   -->
+    <div id="modalContact" class="modal hidden">
+      <div class="modal-overlay" onclick="fermerContact()"></div>
+      <div class="modal-box contact-modal-box">
+        <button class="modal-close" onclick="fermerContact()"><i class="fas fa-times"></i></button>
+        <div class="contact-modal-header">
+          <i class="fas fa-heart"></i>
+          <h3>Je suis intéressé</h3>
+          <p>
+            Annonce : <strong id="modalAnnonceId">–</strong>
+          </p>
+        </div>
+        <form id="interetForm" onsubmit="envoyerInteret(event)">
+          <div class="form-group">
+            <label>Prénom *</label>
+            <input type="text" id="iPrenom" placeholder="Votre prénom" required />
+          </div>
+          <div class="form-group">
+            <label>Nom *</label>
+            <input type="text" id="iNom" placeholder="Votre nom" required />
+          </div>
+          <div class="form-group">
+            <label>Numéro de téléphone *</label>
+            <input type="tel" id="iTel" placeholder="+225 07 XX XX XX XX" required />
+          </div>
+          <div class="form-group">
+            <label>Message (optionnel)</label>
+            <textarea id="iMsg" rows="2" placeholder="Précisez votre demande…"></textarea>
+          </div>
+          <div class="form-btns">
+            <button type="submit" class="btn-primary"><i class="fas fa-paper-plane"></i> Envoyer</button>
+            <button type="button" class="btn-whatsapp" id="btnWhatsApp" onclick="ouvrirWhatsApp()"><i class="fab fa-whatsapp"></i> WhatsApp</button>
+          </div>
+        </form>
+      </div>
     </div>
-    <form id="interetForm" onsubmit="envoyerInteret(event)">
-      <div class="form-group">
-        <label>Prénom *</label>
-        <input type="text" id="iPrenom" placeholder="Votre prénom" required />
-      </div>
-      <div class="form-group">
-        <label>Nom *</label>
-        <input type="text" id="iNom" placeholder="Votre nom" required />
-      </div>
-      <div class="form-group">
-        <label>Numéro de téléphone *</label>
-        <input type="tel" id="iTel" placeholder="+225 07 XX XX XX XX" required />
-      </div>
-      <div class="form-group">
-        <label>Message (optionnel)</label>
-        <textarea id="iMsg" rows="2" placeholder="Précisez votre demande…"></textarea>
-      </div>
-      <div class="form-btns">
-        <button type="submit" class="btn-primary">
-          <i class="fas fa-paper-plane"></i> Envoyer
-        </button>
-        <button type="button" class="btn-whatsapp" id="btnWhatsApp" onclick="ouvrirWhatsApp()">
-          <i class="fab fa-whatsapp"></i> WhatsApp
-        </button>
-      </div>
-    </form>
-  </div>
-</div>
 
-<!-- ============================================================
+    <!--   ============================================================
      TOAST (notification succès / erreur)
-============================================================ -->
-<div id="toast" class="toast hidden"></div>
+============================================================   -->
+    <div id="toast" class="toast hidden"></div>
 
-<!-- Notre script principal -->
-<script src="{% static 'annonces/js/script.js' %}"></script>
-</body>
+    <!-- Notre script principal -->
+    <script src="{% static 'annonces/js/script.js' %}"></script>
+  </body>
 </html>

@@ -11,62 +11,62 @@ let annonces = [];
 /* ──────────────────────────────────────────────────────────────
    2. ÉTAT DE L'APPLICATION (variables globales)
 ────────────────────────────────────────────────────────────── */
-let filtreActif   = "tous";
+let filtreActif = "tous";
 let annonceActive = null;
 let galerieImages = [];
-let galerieIndex  = 0;
+let galerieIndex = 0;
 let noteSelectionnee = 0;
-let whatsappNumero  = "2250700000000";
+let whatsappNumero = "2250594133243"; // Numéro de contact pour WhatsApp (ex: "2250594133243")
 
 /* ──────────────────────────────────────────────────────────────
    2.5. FONCTIONS POUR L'API DJANGO
 ────────────────────────────────────────────────────────────── */
 // Récupère le token CSRF pour les requêtes POST/PUT/DELETE
 function getCSRFToken() {
-    let cookieValue = null;
-    if (document.cookie && document.cookie !== '') {
-        const cookies = document.cookie.split(';');
-        for (let i = 0; i < cookies.length; i++) {
-            const cookie = cookies[i].trim();
-            if (cookie.substring(0, 10) === 'csrftoken=') {
-                cookieValue = decodeURIComponent(cookie.substring(10));
-                break;
-            }
-        }
+  let cookieValue = null;
+  if (document.cookie && document.cookie !== '') {
+    const cookies = document.cookie.split(';');
+    for (let i = 0; i < cookies.length; i++) {
+      const cookie = cookies[i].trim();
+      if (cookie.substring(0, 10) === 'csrftoken=') {
+        cookieValue = decodeURIComponent(cookie.substring(10));
+        break;
+      }
     }
-    return cookieValue;
+  }
+  return cookieValue;
 }
 
 // Vérifie la taille du fichier (max 10 MB)
 function verifierTailleFichier(fichier, maxMB = 10) {
-    const maxOctets = maxMB * 1024 * 1024;
-    if (fichier.size > maxOctets) {
-        afficherToast(`❌ Le fichier "${fichier.name}" dépasse ${maxMB} MB`, 'error');
-        return false;
-    }
-    return true;
+  const maxOctets = maxMB * 1024 * 1024;
+  if (fichier.size > maxOctets) {
+    afficherToast(`❌ Le fichier "${fichier.name}" dépasse ${maxMB} MB`, 'error');
+    return false;
+  }
+  return true;
 }
 
 // Charge les annonces depuis l'API Django
 async function chargerAnnonces() {
-    try {
-        const response = await fetch('/api/annonces/');
-        const data = await response.json();
-        annonces = data;
-        
-        renderAnnonces();
-        if (document.getElementById('annoncesGrid2')) {
-            renderAnnoncesPage2();
-        }
-        if (document.getElementById('adminList')) {
-            renderAdminList();
-        }
-        
-        console.log(`✅ ${annonces.length} annonces chargées depuis Django`);
-    } catch (error) {
-        console.error('Erreur lors du chargement des annonces:', error);
-        afficherToast('Impossible de charger les annonces', 'error');
+  try {
+    const response = await fetch('/api/annonces/');
+    const data = await response.json();
+    annonces = data;
+
+    renderAnnonces();
+    if (document.getElementById('annoncesGrid2')) {
+      renderAnnoncesPage2();
     }
+    if (document.getElementById('adminList')) {
+      renderAdminList();
+    }
+
+    console.log(`✅ ${annonces.length} annonces chargées depuis Django`);
+  } catch (error) {
+    console.error('Erreur lors du chargement des annonces:', error);
+    afficherToast('Impossible de charger les annonces', 'error');
+  }
 }
 
 /* ──────────────────────────────────────────────────────────────
@@ -79,7 +79,7 @@ function showPage(nom) {
   document.getElementById('navLinks').classList.remove('open');
   window.scrollTo({ top: 0, behavior: 'smooth' });
   if (nom === 'annonces') renderAnnoncesPage2();
-  if (nom === 'admin')    renderAdminList();
+  if (nom === 'admin') renderAdminList();
 }
 
 function toggleMenu() {
@@ -90,14 +90,14 @@ function retourAccueil() { showPage('accueil'); }
 
 // Fonction utilitaire pour corriger les URLs des fichiers uploadés
 function getMediaUrl(path) {
-    if (!path) return null;
-    if (path.startsWith('http://') || path.startsWith('https://')) {
-        return path;
-    }
-    if (path.startsWith('/media/')) {
-        return path;
-    }
-    return `/media/${path}`;
+  if (!path) return null;
+  if (path.startsWith('http://') || path.startsWith('https://')) {
+    return path;
+  }
+  if (path.startsWith('/media/')) {
+    return path;
+  }
+  return `/media/${path}`;
 }
 
 /* ──────────────────────────────────────────────────────────────
@@ -163,16 +163,16 @@ function capitaliser(str) {
    5. AFFICHAGE DE LA GRILLE D'ANNONCES (page accueil)
 ────────────────────────────────────────────────────────────── */
 function renderAnnonces() {
-  const grid     = document.getElementById('annoncesGrid');
+  const grid = document.getElementById('annoncesGrid');
   const noResult = document.getElementById('noResult');
-  const terme    = document.getElementById('searchInput')?.value.toLowerCase() || '';
+  const terme = document.getElementById('searchInput')?.value.toLowerCase() || '';
 
   const filtrees = annonces.filter(a => {
-    const matchType   = filtreActif === 'tous' || a.type === filtreActif;
+    const matchType = filtreActif === 'tous' || a.type === filtreActif;
     const matchSearch = terme === '' ||
-      a.titre.toLowerCase().includes(terme)     ||
-      a.ville.toLowerCase().includes(terme)     ||
-      a.quartier.toLowerCase().includes(terme)  ||
+      a.titre.toLowerCase().includes(terme) ||
+      a.ville.toLowerCase().includes(terme) ||
+      a.quartier.toLowerCase().includes(terme) ||
       a.id.toLowerCase().includes(terme);
     return matchType && matchSearch;
   });
@@ -232,7 +232,7 @@ function voirDetail(id) {
     const imgUrl = getMediaUrl(img);
     return `
       <div class="detail-thumb ${i === 0 ? 'active' : ''}" onclick="changerImgDetail(this,'${imgUrl}',${i})">
-        <img src="${imgUrl}" alt="Photo ${i+1}" />
+        <img src="${imgUrl}" alt="Photo ${i + 1}" />
       </div>
     `;
   }).join('');
@@ -241,15 +241,15 @@ function voirDetail(id) {
     <div class="docs-section">
       <h3><i class="fas fa-folder-open"></i> Documents juridiques (${a.documents.length})</h3>
       ${a.documents.map((doc, i) => {
-        const docUrl = getMediaUrl(doc.url);
-        return `
+    const docUrl = getMediaUrl(doc.url);
+    return `
           <div class="doc-item" onclick="window.open('${docUrl}', '_blank')">
             <i class="fas fa-file-alt"></i>
             <span>${doc.nom}</span>
             <i class="fas fa-external-link-alt" style="margin-left:auto;font-size:0.75rem"></i>
           </div>
         `;
-      }).join('')}
+  }).join('')}
     </div>
   ` : '';
 
@@ -266,10 +266,10 @@ function voirDetail(id) {
   `).join('');
 
   const msgWA = encodeURIComponent(
-    `Bonjour Cabinet Bou, je suis intéressé par l'annonce #${a.id} – ${a.titre}. Pouvez-vous me contacter ?`
+    `Bonjour Cabinet Maitre BROU DRAMA & GOURIHI TITIRO, je suis intéressé par l'annonce #${a.id} – ${a.titre}. Pouvez-vous me contacter ?`
   );
   const lienWA = `https://wa.me/${whatsappNumero}?text=${msgWA}`;
-  
+
   const imgPrincipaleUrl = getMediaUrl(a.imgPrincipale) || 'https://via.placeholder.com/800x400?text=Image+indisponible';
 
   document.getElementById('detailContent').innerHTML = `
@@ -321,17 +321,17 @@ function voirDetail(id) {
             <i class="fab fa-whatsapp"></i> Contacter via WhatsApp
           </a>
           <p style="font-size:0.78rem;color:var(--gray-mid);text-align:center;margin-top:12px">
-            <i class="fas fa-shield-alt"></i> Transaction sécurisée par le Cabinet Bou
+            <i class="fas fa-shield-alt"></i> Transaction sécurisée par le Cabinet Maîtres BROU DRAMA & GOURIHI TITIRO
           </p>
         </div>
         <div class="sidebar-card" style="margin-top:16px">
-          <h3><i class="fas fa-balance-scale"></i> Cabinet Monsieur Bou</h3>
+          <h3><i class="fas fa-balance-scale"></i> Cabinet Maîtres BROU DRAMA & GOURIHI TITIRO</h3>
           <p style="font-size:0.85rem;color:var(--gray-mid);margin-bottom:10px">
-            Experts en droit immobilier depuis 2016. Chaque annonce est vérifiée et sécurisée juridiquement.
+            Experts en droit immobilier. Chaque annonce est vérifiée et sécurisée juridiquement.
           </p>
           <div style="font-size:0.82rem;color:var(--gray-mid)">
-            <div style="margin-bottom:6px"><i class="fas fa-phone" style="color:var(--blue);width:16px"></i> +225 07 00 00 00 00</div>
-            <div><i class="fas fa-envelope" style="color:var(--blue);width:16px"></i> contact@cabinetbou.ci</div>
+            <div style="margin-bottom:6px"><i class="fas fa-phone" style="color:var(--blue);width:16px"></i> +225 05 94 13 32 43 </div>
+            <div><i class="fas fa-envelope" style="color:var(--blue);width:16px"></i> cabinet2maitrebrou@gmail.com</div>
           </div>
         </div>
       </div>
@@ -358,10 +358,10 @@ function ouvrirGalerie(id, indexDep = 0, mode = 'images', docIdx = 0) {
 
   if (mode === 'docs') {
     galerieImages = a.documents.map(d => getMediaUrl(d.url));
-    galerieIndex  = docIdx;
+    galerieIndex = docIdx;
   } else {
     galerieImages = a.images.map(img => getMediaUrl(img));
-    galerieIndex  = indexDep;
+    galerieIndex = indexDep;
   }
 
   afficherImageGalerie();
@@ -370,7 +370,7 @@ function ouvrirGalerie(id, indexDep = 0, mode = 'images', docIdx = 0) {
 }
 
 function afficherImageGalerie() {
-  const img   = document.getElementById('galerieImg');
+  const img = document.getElementById('galerieImg');
   const count = document.getElementById('galerieCount');
   const thumbs = document.getElementById('galerieThumbs');
 
@@ -379,7 +379,7 @@ function afficherImageGalerie() {
 
   thumbs.innerHTML = galerieImages.map((src, i) => `
     <img src="${src}" class="${i === galerieIndex ? 'active-thumb' : ''}"
-         onclick="galerieGoTo(${i})" alt="Photo ${i+1}" />
+         onclick="galerieGoTo(${i})" alt="Photo ${i + 1}" />
   `).join('');
 }
 
@@ -400,12 +400,12 @@ function fermerGalerie() {
   document.body.style.overflow = '';
 }
 
-document.addEventListener('keydown', function(e) {
+document.addEventListener('keydown', function (e) {
   const modal = document.getElementById('modalGalerie');
   if (modal.classList.contains('hidden')) return;
   if (e.key === 'ArrowRight') galerieNext();
-  if (e.key === 'ArrowLeft')  galeriePrev();
-  if (e.key === 'Escape')     fermerGalerie();
+  if (e.key === 'ArrowLeft') galeriePrev();
+  if (e.key === 'Escape') fermerGalerie();
 });
 
 /* ──────────────────────────────────────────────────────────────
@@ -417,9 +417,9 @@ function ouvrirContact(id) {
 
   document.getElementById('modalAnnonceId').textContent = `#${id} – ${annonceActive.titre}`;
   document.getElementById('iPrenom').value = '';
-  document.getElementById('iNom').value    = '';
-  document.getElementById('iTel').value    = '';
-  document.getElementById('iMsg').value    = '';
+  document.getElementById('iNom').value = '';
+  document.getElementById('iTel').value = '';
+  document.getElementById('iMsg').value = '';
 
   document.getElementById('modalContact').classList.remove('hidden');
   document.body.style.overflow = 'hidden';
@@ -434,9 +434,9 @@ function envoyerInteret(event) {
   event.preventDefault();
 
   const prenom = document.getElementById('iPrenom').value.trim();
-  const nom    = document.getElementById('iNom').value.trim();
-  const tel    = document.getElementById('iTel').value.trim();
-  const msg    = document.getElementById('iMsg').value.trim();
+  const nom = document.getElementById('iNom').value.trim();
+  const tel = document.getElementById('iTel').value.trim();
+  const msg = document.getElementById('iMsg').value.trim();
 
   if (!prenom || !nom || !tel) {
     afficherToast('Veuillez remplir tous les champs obligatoires.', 'error');
@@ -447,7 +447,7 @@ function envoyerInteret(event) {
   const msgEncode = encodeURIComponent(msgAuto);
   const lienWA = `https://wa.me/${whatsappNumero}?text=${msgEncode}`;
 
-  document.getElementById('btnWhatsApp').onclick = function() {
+  document.getElementById('btnWhatsApp').onclick = function () {
     window.open(lienWA, '_blank');
   };
 
@@ -458,8 +458,8 @@ function envoyerInteret(event) {
 
 function ouvrirWhatsApp() {
   const prenom = document.getElementById('iPrenom').value.trim();
-  const nom    = document.getElementById('iNom').value.trim();
-  const tel    = document.getElementById('iTel').value.trim();
+  const nom = document.getElementById('iNom').value.trim();
+  const tel = document.getElementById('iTel').value.trim();
 
   if (!annonceActive) return;
 
@@ -493,10 +493,10 @@ function selNote(val) {
 ────────────────────────────────────────────────────────────── */
 async function ajouterCommentaire(annonceId) {
   const auteur = document.getElementById('comAuteur').value.trim();
-  const texte  = document.getElementById('comTexte').value.trim();
+  const texte = document.getElementById('comTexte').value.trim();
 
   if (!auteur) { afficherToast('Veuillez entrer votre nom.', 'error'); return; }
-  if (!texte)  { afficherToast('Veuillez écrire un commentaire.', 'error'); return; }
+  if (!texte) { afficherToast('Veuillez écrire un commentaire.', 'error'); return; }
   if (noteSelectionnee === 0) { afficherToast('Veuillez sélectionner une note (étoiles).', 'error'); return; }
 
   try {
@@ -532,9 +532,9 @@ async function ajouterCommentaire(annonceId) {
 function envoyerContact(event) {
   event.preventDefault();
 
-  const prenom  = document.getElementById('cPrenom').value.trim();
-  const nom     = document.getElementById('cNom').value.trim();
-  const tel     = document.getElementById('cTel').value.trim();
+  const prenom = document.getElementById('cPrenom').value.trim();
+  const nom = document.getElementById('cNom').value.trim();
+  const tel = document.getElementById('cTel').value.trim();
   const message = document.getElementById('cMessage').value.trim();
 
   if (!prenom || !nom || !tel || !message) {
@@ -556,60 +556,60 @@ function envoyerContact(event) {
    14. TABLEAU DE BORD ADMIN (version API Django avec upload)
 ────────────────────────────────────────────────────────────── */
 async function ajouterAnnonce(event) {
-    event.preventDefault();
+  event.preventDefault();
 
-    const formData = new FormData();
-    
-    formData.append('titre', document.getElementById('aTitle').value.trim());
-    formData.append('type', document.getElementById('aType').value);
-    formData.append('ville', document.getElementById('aVille').value.trim());
-    formData.append('quartier', document.getElementById('aQuartier').value.trim());
-    formData.append('prix', document.getElementById('aPrix').value.trim());
-    formData.append('surface', document.getElementById('aSurface').value.trim());
-    formData.append('description', document.getElementById('aDesc').value.trim());
-    
-    const imgMain = document.getElementById('aImgMain').files[0];
-    if (imgMain) {
-        if (!verifierTailleFichier(imgMain, 10)) return;
-        formData.append('img_principale', imgMain);
+  const formData = new FormData();
+
+  formData.append('titre', document.getElementById('aTitle').value.trim());
+  formData.append('type', document.getElementById('aType').value);
+  formData.append('ville', document.getElementById('aVille').value.trim());
+  formData.append('quartier', document.getElementById('aQuartier').value.trim());
+  formData.append('prix', document.getElementById('aPrix').value.trim());
+  formData.append('surface', document.getElementById('aSurface').value.trim());
+  formData.append('description', document.getElementById('aDesc').value.trim());
+
+  const imgMain = document.getElementById('aImgMain').files[0];
+  if (imgMain) {
+    if (!verifierTailleFichier(imgMain, 10)) return;
+    formData.append('img_principale', imgMain);
+  } else {
+    afficherToast('Veuillez sélectionner une image principale', 'error');
+    return;
+  }
+
+  const imgsSecond = document.getElementById('aImgsSecond').files;
+  for (let i = 0; i < imgsSecond.length; i++) {
+    if (!verifierTailleFichier(imgsSecond[i], 10)) return;
+    formData.append('images', imgsSecond[i]);
+  }
+
+  const docs = document.getElementById('aDocs').files;
+  for (let i = 0; i < docs.length; i++) {
+    if (!verifierTailleFichier(docs[i], 10)) return;
+    formData.append('documents', docs[i]);
+  }
+
+  try {
+    const response = await fetch('/api/annonces/creer/', {
+      method: 'POST',
+      headers: {
+        'X-CSRFToken': getCSRFToken()
+      },
+      body: formData
+    });
+
+    if (response.ok) {
+      await chargerAnnonces();
+      document.getElementById('adminForm').reset();
+      afficherToast('✅ Annonce publiée avec succès !', 'success');
     } else {
-        afficherToast('Veuillez sélectionner une image principale', 'error');
-        return;
+      const error = await response.json();
+      afficherToast('Erreur: ' + (error.error || 'Problème lors de la création'), 'error');
     }
-    
-    const imgsSecond = document.getElementById('aImgsSecond').files;
-    for (let i = 0; i < imgsSecond.length; i++) {
-        if (!verifierTailleFichier(imgsSecond[i], 10)) return;
-        formData.append('images', imgsSecond[i]);
-    }
-    
-    const docs = document.getElementById('aDocs').files;
-    for (let i = 0; i < docs.length; i++) {
-        if (!verifierTailleFichier(docs[i], 10)) return;
-        formData.append('documents', docs[i]);
-    }
-
-    try {
-        const response = await fetch('/api/annonces/creer/', {
-            method: 'POST',
-            headers: {
-                'X-CSRFToken': getCSRFToken()
-            },
-            body: formData
-        });
-
-        if (response.ok) {
-            await chargerAnnonces();
-            document.getElementById('adminForm').reset();
-            afficherToast('✅ Annonce publiée avec succès !', 'success');
-        } else {
-            const error = await response.json();
-            afficherToast('Erreur: ' + (error.error || 'Problème lors de la création'), 'error');
-        }
-    } catch (error) {
-        console.error('Erreur:', error);
-        afficherToast('Erreur réseau', 'error');
-    }
+  } catch (error) {
+    console.error('Erreur:', error);
+    afficherToast('Erreur réseau', 'error');
+  }
 }
 
 function renderAdminList() {
@@ -662,48 +662,48 @@ function fermerEditAnnonce() {
 }
 
 async function soumettreEditAnnonce(event) {
-    event.preventDefault();
-    const id = document.getElementById('editId').value;
+  event.preventDefault();
+  const id = document.getElementById('editId').value;
 
-    const formData = new FormData();
-    formData.append('titre', document.getElementById('editTitre').value);
-    formData.append('type', document.getElementById('editType').value);
-    formData.append('ville', document.getElementById('editVille').value);
-    formData.append('quartier', document.getElementById('editQuartier').value);
-    formData.append('prix', document.getElementById('editPrix').value);
-    formData.append('surface', document.getElementById('editSurface').value);
-    formData.append('description', document.getElementById('editDescription').value);
-    
-    const imgFile = document.getElementById('editImgPrincipale').files[0];
-    if (imgFile) {
-        if (!verifierTailleFichier(imgFile, 10)) return;
-        formData.append('img_principale', imgFile);
+  const formData = new FormData();
+  formData.append('titre', document.getElementById('editTitre').value);
+  formData.append('type', document.getElementById('editType').value);
+  formData.append('ville', document.getElementById('editVille').value);
+  formData.append('quartier', document.getElementById('editQuartier').value);
+  formData.append('prix', document.getElementById('editPrix').value);
+  formData.append('surface', document.getElementById('editSurface').value);
+  formData.append('description', document.getElementById('editDescription').value);
+
+  const imgFile = document.getElementById('editImgPrincipale').files[0];
+  if (imgFile) {
+    if (!verifierTailleFichier(imgFile, 10)) return;
+    formData.append('img_principale', imgFile);
+  }
+
+  // Ajouter un paramètre _method pour simuler PUT
+  formData.append('_method', 'PUT');
+
+  try {
+    const response = await fetch(`/api/annonces/${id}/modifier/`, {
+      method: 'POST',  // ← Utiliser POST au lieu de PUT
+      headers: {
+        'X-CSRFToken': getCSRFToken()
+      },
+      body: formData
+    });
+
+    if (response.ok) {
+      await chargerAnnonces();
+      fermerEditAnnonce();
+      afficherToast(`Annonce #${id} modifiée.`, 'success');
+    } else {
+      const error = await response.json();
+      afficherToast('Erreur: ' + (error.error || 'Problème lors de la modification'), 'error');
     }
-
-    // Ajouter un paramètre _method pour simuler PUT
-    formData.append('_method', 'PUT');
-
-    try {
-        const response = await fetch(`/api/annonces/${id}/modifier/`, {
-            method: 'POST',  // ← Utiliser POST au lieu de PUT
-            headers: {
-                'X-CSRFToken': getCSRFToken()
-            },
-            body: formData
-        });
-
-        if (response.ok) {
-            await chargerAnnonces();
-            fermerEditAnnonce();
-            afficherToast(`Annonce #${id} modifiée.`, 'success');
-        } else {
-            const error = await response.json();
-            afficherToast('Erreur: ' + (error.error || 'Problème lors de la modification'), 'error');
-        }
-    } catch (error) {
-        console.error('Erreur:', error);
-        afficherToast('Erreur réseau', 'error');
-    }
+  } catch (error) {
+    console.error('Erreur:', error);
+    afficherToast('Erreur réseau', 'error');
+  }
 }
 
 async function supprimerAnnonce(id) {
@@ -737,7 +737,7 @@ let toastTimer = null;
 function afficherToast(message, type = '', duree = 3500) {
   const toast = document.getElementById('toast');
   toast.textContent = message;
-  toast.className   = `toast ${type}`;
+  toast.className = `toast ${type}`;
   toast.classList.remove('hidden');
   if (toastTimer) clearTimeout(toastTimer);
   toastTimer = setTimeout(() => {
@@ -751,7 +751,7 @@ function afficherToast(message, type = '', duree = 3500) {
 document.addEventListener('DOMContentLoaded', async function () {
   await chargerAnnonces();
   animerApparition();
-  console.log('%c✅ Cabinet Monsieur Bou – Version Django chargée', 'color:#1E3A8A;font-weight:bold;font-size:14px');
+  console.log('%c✅ Cabinet Monsieur BROU DRAMA & GOURIHI TITIRO – Version Django chargée', 'color:#1E3A8A;font-weight:bold;font-size:14px');
 });
 
 /* ──────────────────────────────────────────────────────────────
