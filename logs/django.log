@@ -1042,3 +1042,9 @@ INFO 2026-06-06 07:29:14,122 log "GET /media/annonces/images/TERRAIN222-818x540.
 INFO 2026-06-06 07:29:14,665 log "GET /media/annonces/images/3878315687202727468095045239721339223342597n.png HTTP/1.1" 200 428617
 INFO 2026-06-06 07:29:25,132 log "GET /media/annonces/images/WhatsApp-Image-2021-09-21-at-17.01.37-818x540.jpeg HTTP/1.1" 200 107292
 INFO 2026-06-06 07:29:25,205 log "GET /media/annonces/images/c0615957abfef51c1551d43276213499.jpg HTTP/1.1" 200 51690
+INFO 2026-06-06 08:57:02,925 autoreload C:\Users\TOSHIBA\cabinet_django\annonces\views.py changed, reloading.
+INFO 2026-06-06 08:57:17,597 autoreload Watching for file changes with StatReloader
+INFO 2026-06-06 09:08:05,163 autoreload C:\Users\TOSHIBA\cabinet_django\annonces\models.py changed, reloading.
+INFO 2026-06-06 09:08:12,944 autoreload Watching for file changes with StatReloader
+INFO 2026-06-06 09:08:46,455 log "GET / HTTP/1.1" 200 24286
+INFO 2026-06-06 09:08:48,225 log "GET /api/annonces/ HTTP/1.1" 200 878

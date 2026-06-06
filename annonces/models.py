@@ -5,18 +5,17 @@ class Annonce(models.Model):
     # Types d'annonces disponibles
     TYPE_CHOICES = [
         ('terrain', 'Terrain'),
-        ('maison', 'Maison'),
-        ('appartement', 'Appartement'),
-        ('commercial', 'Commercial'),
-        ('Lotissement', 'Lotissement'),
-        ('Amenagement', 'Aménagement'),
-        ('Financement', 'Financement'),
+        ('Location de Terres', 'Location de Terres'),
+        ('Bail Emphytéotique', 'Bail Emphytéotique'),
+        ('commercial', 'Partenariat Agrilcole'),
+        ('Recherche de Financement', 'Recherche de Financement'),
     ]
     
     # Informations de base
     id_annonce = models.CharField(max_length=10, unique=True, editable=False)
     titre = models.CharField(max_length=200)
-    type = models.CharField(max_length=20, choices=TYPE_CHOICES)
+    # `max_length` must be au moins la longueur de la plus longue valeur de TYPE_CHOICES (24)
+    type = models.CharField(max_length=30, choices=TYPE_CHOICES)
     ville = models.CharField(max_length=100)
     quartier = models.CharField(max_length=100)
     prix = models.CharField(max_length=50)
