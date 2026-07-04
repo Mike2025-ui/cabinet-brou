@@ -35,6 +35,7 @@ DATA_UPLOAD_MAX_NUMBER_FILES = 100
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-p0e716hof6lkpiy%t08cd3k6)ck&ds8-$q+!b2+=l3ok6jj@_1'
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
