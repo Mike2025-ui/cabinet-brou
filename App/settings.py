@@ -34,16 +34,20 @@ DATA_UPLOAD_MAX_NUMBER_FILES = 100
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-p0e716hof6lkpiy%t08cd3k6)ck&ds8-$q+!b2+=l3ok6jj@_1'
+
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [
     '127.0.0.1',
     'localhost',
     'Michael2026.pythonanywhere.com',  # Remplace "toncompte" par ton vrai nom d'utilisateur
+    '89.116.26.232',
+    'hebruni-immobilier.captain.localhost',
+    'hebruni-immobilier.89.116.26.232.nip.io',
+    '*',  # ← En attendant, on peut autoriser tout (mais à enlever plus tard)
 ]
 
 
@@ -192,7 +196,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/6.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'fr'
 
 TIME_ZONE = 'UTC'
 

@@ -1114,3 +1114,14 @@ INFO 2026-06-27 19:13:02,024 log "GET / HTTP/1.1" 200 24284
 INFO 2026-06-27 19:13:02,437 log "GET /api/annonces/ HTTP/1.1" 200 1307
 INFO 2026-06-27 19:18:38,536 log "GET / HTTP/1.1" 200 24292
 INFO 2026-06-27 19:18:44,494 log "GET /api/annonces/ HTTP/1.1" 200 1307
+INFO 2026-07-04 13:53:43,185 autoreload Watching for file changes with StatReloader
+INFO 2026-07-04 13:54:08,378 log "GET / HTTP/1.1" 200 24292
+INFO 2026-07-04 13:54:08,813 log "GET /static/annonces/images/Logo_Cabinet.jpeg HTTP/1.1" 200 48890
+INFO 2026-07-04 13:54:08,834 log "GET /static/annonces/css/style.css HTTP/1.1" 200 31648
+INFO 2026-07-04 13:54:08,959 log "GET /static/annonces/js/script.js HTTP/1.1" 200 34490
+INFO 2026-07-04 13:54:09,355 log "GET /api/annonces/ HTTP/1.1" 200 1307
+INFO 2026-07-04 13:54:09,480 log "GET /media/annonces/images/TERRAIN222-818x540.jpeg HTTP/1.1" 200 74576
+INFO 2026-07-04 13:54:09,495 log "GET /media/annonces/images/3878315687202727468095045239721339223342597n.png HTTP/1.1" 304 0
+INFO 2026-07-04 13:54:09,500 log "GET /media/annonces/images/images_13.jfif HTTP/1.1" 200 14153
+WARNING 2026-07-04 13:54:09,582 log Not Found: /favicon.ico
+WARNING 2026-07-04 13:54:09,583 log "GET /favicon.ico HTTP/1.1" 404 4801
