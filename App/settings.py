@@ -41,13 +41,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 DEBUG = False
 
 ALLOWED_HOSTS = [
-    '127.0.0.1',
-    'localhost',
-    'Michael2026.pythonanywhere.com',  # Remplace "toncompte" par ton vrai nom d'utilisateur
+    'hebruni-immobilier.com',
+    'www.hebruni-immobilier.com',
     '89.116.26.232',
-    'hebruni-immobilier.captain.localhost',
-    'hebruni-immobilier.89.116.26.232.nip.io',
-    '*',  # ← En attendant, on peut autoriser tout (mais à enlever plus tard)
 ]
 
 
