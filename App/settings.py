@@ -62,6 +62,7 @@ INSTALLED_APPS = [
     #'django_otp.plugins.otp_totp',
     #'django_otp.plugins.otp_static',
     'annonces',  # Votre app doit être après django_otp
+    '*'
 ]
 
 LOGGING = {
