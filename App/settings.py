@@ -40,11 +40,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = [
-    'hebruni-immobilier.com',
-    'www.hebruni-immobilier.com',
-    '89.116.26.232',
-]
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -62,7 +58,6 @@ INSTALLED_APPS = [
     #'django_otp.plugins.otp_totp',
     #'django_otp.plugins.otp_static',
     'annonces',  # Votre app doit être après django_otp
-    '*'
 ]
 
 LOGGING = {
