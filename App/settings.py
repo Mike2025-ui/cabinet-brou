@@ -139,3 +139,6 @@ LOGGING = {
     },
 }
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# Ajout du support MIME pour les fichiers .jfif (JPEG File Interchange Format)
+import mimetypes
+mimetypes.add_type('image/jpeg', '.jfif')
