@@ -6,6 +6,8 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from django.views.static import serve  # 👈 AJOUT IMPORTANT
+from django.urls import re_path       # 👈 AJOUT IMPORTANT
 from django.http import HttpResponse
 
 # Vue pour le health check
@@ -19,6 +21,10 @@ urlpatterns = [
     path('health/', health_check),
 ]
 
-# Servir les fichiers médias EN TOUT TEMPS (même en production)
-# car nous n'avons pas de serveur web dédié (Nginx) pour les servir
+# 👇 SERVI LES MÉDIAS EN FORCE (même avec DEBUG=False)
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+# 👇 AJOUT : FORCER LE SERVEUR DE MÉDIAS AVEC UNE VUE EXPLICITE
+urlpatterns += [
+    re_path(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
+]
