@@ -7,8 +7,8 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from django.http import HttpResponse
-from django.urls import path
 
+# Vue pour le health check
 def health_check(request):
     return HttpResponse("OK", status=200)
 
@@ -19,6 +19,6 @@ urlpatterns = [
     path('health/', health_check),
 ]
 
-# Servir les fichiers médias (images, documents) en développement
-if not settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# Servir les fichiers médias EN TOUT TEMPS (même en production)
+# car nous n'avons pas de serveur web dédié (Nginx) pour les servir
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
