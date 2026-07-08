@@ -11,6 +11,8 @@
 
     <!-- Notre feuille de style principale -->
     <link rel="stylesheet" href="{% static 'annonces/css/style.css' %}" />
+    <!-- Favicon -->
+    <link rel="icon" href="{% static 'annonces/images/logo.jpg' %}" type="image/jpeg" />
   </head>
 
   {% if show_admin %}
@@ -22,13 +24,13 @@
   {% endif %}
 
   <body>
-    <!--     ============================================================
+    <!--          ============================================================
      BARRE DE NAVIGATION
-============================================================     -->
+============================================================          -->
     <header id="navbar">
       <div class="nav-container">
         <div class="nav-logo">
-          <img src="{% static 'annonces/images/Logo_Cabinet.jpeg' %}" alt="Logo" style="height: 60px; width: 70px;" />
+          <img src="{% static 'annonces/images/logo.jpg' %}" alt="Logo" style="height: 60px; width: 70px;" />
           <span><strong>CABINET MAITRES BROU DRAMA & GOURIHI TITIRO</strong></span>
         </div>
         <nav class="nav-links" id="navLinks">
@@ -41,9 +43,9 @@
       </div>
     </header>
 
-    <!--     ============================================================
+    <!--          ============================================================
      PAGE : ACCUEIL
-============================================================     -->
+============================================================          -->
     <div id="page-accueil" class="page active">
       <section class="hero">
         <div class="hero-content">
@@ -129,9 +131,9 @@
       </section>
     </div>
 
-    <!--     ============================================================
+    <!--          ============================================================
      PAGE : ANNONCES (liste complète)
-============================================================     -->
+============================================================          -->
     <div id="page-annonces" class="page">
       <section class="annonces-section">
         <div class="container">
@@ -147,9 +149,9 @@
       </section>
     </div>
 
-    <!--     ============================================================
+    <!--          ============================================================
      PAGE : DÉTAIL D'UNE ANNONCE
-============================================================     -->
+============================================================          -->
     <div id="page-detail" class="page">
       <div class="container">
         <button class="btn-retour" onclick="retourAccueil()"><i class="fas fa-arrow-left"></i> Retour aux annonces</button>
@@ -157,9 +159,9 @@
       </div>
     </div>
 
-    <!--     ============================================================
+    <!--          ============================================================
      PAGE : NOTRE CABINET
-============================================================     -->
+============================================================          -->
     <div id="page-cabinet" class="page">
       <div class="cabinet-hero">
         <div class="container">
@@ -219,9 +221,9 @@
       </div>
     </div>
 
-    <!--     ============================================================
+    <!--          ============================================================
      PAGE : CONTACT
-============================================================     -->
+============================================================          -->
     <div id="page-contact" class="page">
       <div class="container">
         <div class="section-header">
@@ -274,9 +276,9 @@
       </div>
     </div>
 
-    <!--     ============================================================
+    <!--          ============================================================
      PAGE : ADMIN (tableau de bord)
-============================================================     -->
+============================================================          -->
     <div id="page-admin" class="page">
       <div class="container">
         <div class="section-header">
@@ -287,6 +289,7 @@
         <div class="admin-card">
           <h3><i class="fas fa-plus-circle"></i> Ajouter une nouvelle annonce</h3>
           <form id="adminForm" onsubmit="ajouterAnnonce(event)" enctype="multipart/form-data">
+            {% csrf_token %}
             <div class="form-row">
               <div class="form-group">
                 <label>Titre de l'annonce *</label>
@@ -330,9 +333,9 @@
             </div>
 
             <div class="form-group">
-              <label>Image principale *</label>
-              <input type="file" id="aImgMain" accept="image/*" required />
-              <small style="display: block; margin-top: 5px; color: #64748B;"><i class="fas fa-info-circle"></i> Formats acceptés : JPG, PNG, GIF. Taille max : 10 MB</small>
+              <label>Image principale (optionnel)</label>
+              <input type="file" id="aImgMain" accept="image/*" />
+              <small style="display: block; margin-top: 5px; color: #64748B;"><i class="fas fa-info-circle"></i> Formats acceptés : JPG, PNG, GIF. Taille max : 10 MB. Au moins une image OU vidéo obligatoire.</small>
             </div>
 
             <div class="form-group">
@@ -345,6 +348,12 @@
               <label>Documents (PDF, images, etc.)</label>
               <input type="file" id="aDocs" accept=".pdf,.jpg,.png,.docx" multiple />
               <small style="display: block; margin-top: 5px; color: #64748B;"><i class="fas fa-info-circle"></i> Formats acceptés : PDF, JPG, PNG, DOCX. Taille max : 10 MB</small>
+            </div>
+
+            <div class="form-group">
+              <label>Vidéo (optionnel)</label>
+              <input type="file" id="aVideo" accept="video/mp4,video/webm,video/quicktime,.avi" />
+              <small style="display: block; margin-top: 5px; color: #64748B;"><i class="fas fa-info-circle"></i> Formats acceptés : MP4, WebM, MOV, AVI. Taille max : 100 MB</small>
             </div>
 
             <button type="submit" class="btn-primary"><i class="fas fa-save"></i> Publier l'annonce</button>
@@ -411,9 +420,9 @@
       </div>
     </div>
 
-    <!--     ============================================================
+    <!--          ============================================================
      FOOTER
-============================================================     -->
+============================================================          -->
     <footer>
       <div class="container footer-grid">
         <div class="footer-col">
@@ -472,14 +481,14 @@
       </div>
     </footer>
 
-    <!--     ============================================================
+    <!--          ============================================================
      MODAL : GALERIE D'IMAGES
-============================================================     -->
+============================================================          -->
     <div id="modalGalerie" class="modal hidden">
       <div class="modal-overlay" onclick="fermerGalerie()"></div>
       <div class="modal-box galerie-box">
         <button class="modal-close" onclick="fermerGalerie()"><i class="fas fa-times"></i></button>
-        <img id="galerieImg" src="" alt="Image" />
+        <div id="galerieMedia" class="galerie-media"></div>
         <div class="galerie-nav">
           <button onclick="galeriePrev()"><i class="fas fa-chevron-left"></i></button>
           <span id="galerieCount">1 / 1</span>
@@ -489,9 +498,9 @@
       </div>
     </div>
 
-    <!--     ============================================================
+    <!--          ============================================================
      MODAL : FORMULAIRE DE CONTACT (JE SUIS INTÉRESSÉ)
-============================================================     -->
+============================================================          -->
     <div id="modalContact" class="modal hidden">
       <div class="modal-overlay" onclick="fermerContact()"></div>
       <div class="modal-box contact-modal-box">
@@ -528,9 +537,9 @@
       </div>
     </div>
 
-    <!--     ============================================================
+    <!--          ============================================================
      TOAST (notification succès / erreur)
-============================================================     -->
+============================================================          -->
     <div id="toast" class="toast hidden"></div>
 
     <!-- Notre script principal -->
