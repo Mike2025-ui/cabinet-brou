@@ -323,7 +323,7 @@ function voirDetail(id) {
   const thumbsHTML = a.images.map((img, i) => {
     const imgUrl = getMediaUrl(img);
     return `
-      <div class="detail-thumb ${i === 0 ? 'active' : ''}" onclick="changerImgDetail(this,'${imgUrl}',${i})">
+      <div class="detail-thumb ${i === 0 ? 'active' : ''}" onclick="changerImgDetail(this,'${imgUrl}',${i}); ouvrirGalerie('${a.id}', ${i})">
         <img src="${imgUrl}" alt="Photo ${i + 1}" />
       </div>
     `;
@@ -397,7 +397,7 @@ function voirDetail(id) {
   document.getElementById('detailContent').innerHTML = `
     <div class="detail-layout">
       <div>
-        <div class="detail-img-main" id="detailImgMain" ${imgPrincipaleUrl ? `onclick="ouvrirGalerie('${a.id}', 0)"` : ''}>
+        <div class="detail-img-main" id="detailImgMain" ${ (imgPrincipaleUrl || a.video) ? `onclick="ouvrirGalerie('${a.id}', 0)"` : '' }>
           ${mainImageHTML}
         </div>
         <div class="detail-thumbs">${thumbsHTML}</div>
@@ -504,7 +504,21 @@ function ouvrirGalerie(id, indexDep = 0, mode = 'images', docIdx = 0) {
 }
 
 function afficherImageGalerie() {
-  const mediaBox = document.getElementById('galerieMedia');
+  let mediaBox = document.getElementById('galerieMedia');
+  // Si l'élément galerieMedia n'existe pas (cache / template différent), le créer dynamiquement
+  if (!mediaBox) {
+    const modal = document.getElementById('modalGalerie');
+    if (modal) {
+      const box = modal.querySelector('.modal-box') || modal;
+      mediaBox = document.createElement('div');
+      mediaBox.id = 'galerieMedia';
+      mediaBox.className = 'galerie-media';
+      // Insérer avant la navigation
+      const nav = box.querySelector('.galerie-nav');
+      if (nav) box.insertBefore(mediaBox, nav);
+      else box.appendChild(mediaBox);
+    }
+  }
   const count = document.getElementById('galerieCount');
   const thumbs = document.getElementById('galerieThumbs');
   const src = galerieImages[galerieIndex];

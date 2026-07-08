@@ -16,13 +16,20 @@ let annonceActive = null;
 let galerieImages = [];
 let galerieIndex = 0;
 let noteSelectionnee = 0;
-let whatsappNumero = "2250700000000";
+let whatsappNumero = "2250594133243"; // Numéro de contact pour WhatsApp (ex: "2250594133243")
 
 /* ──────────────────────────────────────────────────────────────
    2.5. FONCTIONS POUR L'API DJANGO
 ────────────────────────────────────────────────────────────── */
 // Récupère le token CSRF pour les requêtes POST/PUT/DELETE
 function getCSRFToken() {
+  // Cherche d'abord le token dans le formulaire (créé par {% csrf_token %})
+  const tokenInput = document.querySelector('[name=csrfmiddlewaretoken]');
+  if (tokenInput) {
+    return tokenInput.value;
+  }
+  
+  // Sinon, cherche dans les cookies
   let cookieValue = null;
   if (document.cookie && document.cookie !== '') {
     const cookies = document.cookie.split(';');
@@ -86,7 +93,23 @@ function toggleMenu() {
   document.getElementById('navLinks').classList.toggle('open');
 }
 
-function retourAccueil() { showPage('accueil'); }
+function retourAccueil() { 
+  showPage('accueil');
+  // Scroll vers l'annonce active après 300ms (le temps que la page charge)
+  if (annonceActive && annonceActive.id) {
+    setTimeout(() => {
+      const card = document.querySelector(`[data-id="${annonceActive.id}"]`);
+      if (card) {
+        card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        // Highlight l'annonce avec un petit effet
+        card.style.boxShadow = '0 0 20px rgba(102, 126, 234, 0.6)';
+        setTimeout(() => {
+          card.style.boxShadow = '';
+        }, 2000);
+      }
+    }, 300);
+  }
+}
 
 // Fonction utilitaire pour corriger les URLs des fichiers uploadés
 function getMediaUrl(path) {
@@ -100,20 +123,82 @@ function getMediaUrl(path) {
   return `/media/${path}`;
 }
 
+// Fonction pour extraire la première frame d'une vidéo et la convertir en image
+function extractVideoThumbnail(videoUrl) {
+  return new Promise((resolve) => {
+    const video = document.createElement('video');
+    video.src = videoUrl;
+    video.crossOrigin = 'anonymous';
+    video.currentTime = 0.5; // Aller à 0.5 seconde
+    
+    const handleLoadedData = () => {
+      try {
+        const canvas = document.createElement('canvas');
+        canvas.width = video.videoWidth || 800;
+        canvas.height = video.videoHeight || 400;
+        const ctx = canvas.getContext('2d');
+        if (ctx) {
+          ctx.drawImage(video, 0, 0);
+          const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
+          resolve(dataUrl);
+        } else {
+          resolve(null);
+        }
+      } catch (e) {
+        resolve(null);
+      }
+      video.removeEventListener('loadeddata', handleLoadedData);
+    };
+    
+    video.addEventListener('loadeddata', handleLoadedData, { once: true });
+    video.addEventListener('error', () => {
+      resolve(null);
+      video.removeEventListener('loadeddata', handleLoadedData);
+    });
+  });
+}
+
+// Charger les thumbnails vidéo après que les cartes soient rendues
+async function loadVideoThumbnails() {
+  const videoCards = document.querySelectorAll('.card-img-wrap img[data-video-url]');
+  for (const img of videoCards) {
+    const videoUrl = img.getAttribute('data-video-url');
+    if (videoUrl) {
+      const thumbnail = await extractVideoThumbnail(videoUrl);
+      if (thumbnail) {
+        img.src = thumbnail;
+        img.style.objectFit = 'cover';
+      }
+    }
+  }
+}
+
 /* ──────────────────────────────────────────────────────────────
    4. RENDU DES CARTES D'ANNONCES
 ────────────────────────────────────────────────────────────── */
 function creerCarteHTML(a) {
   const etoiles = genererEtoiles(a.note);
-  const imgUrl = getMediaUrl(a.imgPrincipale) || 'https://via.placeholder.com/400x210?text=Image+indisponible';
+  
+  // Si image principale existe, l'utiliser, sinon utiliser la vidéo ou placeholder
+  let imgUrl = getMediaUrl(a.imgPrincipale);
+  let isVideo = false;
+  let videoAttr = '';
+  
+  if (!imgUrl && a.video) {
+    imgUrl = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 800 400%22%3E%3Crect fill=%22%23667eea%22 width=%22800%22 height=%22400%22/%3E%3Ctext x=%22400%22 y=%22200%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22white%22 font-size=%2280%22%3E▶ Vidéo%3C/text%3E%3C/svg%3E';
+    isVideo = true;
+    videoAttr = `data-video-url="${getMediaUrl(a.video)}"`;
+  } else if (!imgUrl) {
+    imgUrl = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 800 400%22%3E%3Crect fill=%22%23e5e7eb%22 width=%22800%22 height=%22400%22/%3E%3Ctext x=%22400%22 y=%22200%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23999%22 font-size=%2250%22%3E? Image non disponible%3C/text%3E%3C/svg%3E';
+  }
 
   return `
     <div class="annonce-card" data-id="${a.id}" data-type="${a.type}">
       <span class="badge-type">${capitaliser(a.type)}</span>
       <span class="badge-id">#${a.id}</span>
       <div class="card-img-wrap" onclick="voirDetail('${a.id}')">
-        <img src="${imgUrl}" alt="${a.titre}" loading="lazy"
-             onerror="this.src='https://via.placeholder.com/400x210?text=Image+indisponible'" />
+        <img src="${imgUrl}" alt="${a.titre}" loading="lazy" ${videoAttr} />
+        ${isVideo ? '<div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:48px;color:#fff;text-shadow:0 0 10px rgba(0,0,0,0.7);pointer-events:none"><i class="fas fa-play-circle"></i></div>' : ''}
       </div>
       <button class="card-galerie-icon" onclick="event.stopPropagation(); ouvrirGalerie('${a.id}', 0)">
         <i class="fas fa-images"></i> ${a.images.length} photos
@@ -183,6 +268,8 @@ function renderAnnonces() {
   } else {
     noResult.classList.add('hidden');
     grid.innerHTML = filtrees.map(creerCarteHTML).join('');
+    // Charger les thumbnails vidéo
+    loadVideoThumbnails();
   }
 }
 
@@ -203,6 +290,11 @@ function renderAnnoncesPage2() {
   grid.innerHTML = filtrees.length > 0
     ? filtrees.map(creerCarteHTML).join('')
     : '<p style="text-align:center;color:var(--gray-mid);padding:40px">Aucune annonce trouvée.</p>';
+  
+  // Charger les thumbnails vidéo
+  if (filtrees.length > 0) {
+    loadVideoThumbnails();
+  }
 }
 
 function filterAnnonces2() { renderAnnoncesPage2(); }
@@ -253,6 +345,38 @@ function voirDetail(id) {
     </div>
   ` : '';
 
+  // Déterminer l'image/vidéo à afficher en principal
+  let imgPrincipaleUrl = getMediaUrl(a.imgPrincipale);
+  let mainImageHTML = '';
+  
+  if (imgPrincipaleUrl) {
+    // Image principale existe
+    mainImageHTML = `<img src="${imgPrincipaleUrl}" alt="${a.titre}" id="detailImgPrincipale" />`;
+  } else if (a.video) {
+    // Pas d'image mais vidéo existe : afficher la vidéo directement à la place
+    mainImageHTML = `
+      <video width="100%" height="400" controls style="border-radius:8px;background:#000;object-fit:contain">
+        <source src="${getMediaUrl(a.video)}" type="video/mp4">
+        Votre navigateur ne supporte pas la balise vidéo.
+      </video>
+    `;
+  } else {
+    // Ni image ni vidéo
+    imgPrincipaleUrl = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 800 400%22%3E%3Crect fill=%22%23e5e7eb%22 width=%22800%22 height=%22400%22/%3E%3Ctext x=%22400%22 y=%22200%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23999%22 font-size=%2250%22%3E? Image non disponible%3C/text%3E%3C/svg%3E';
+    mainImageHTML = `<img src="${imgPrincipaleUrl}" alt="${a.titre}" id="detailImgPrincipale" />`;
+  }
+
+  // La vidéo s'affiche comme image principale si pas d'image, donc on la montre en section vidéo seulement si image existe
+  const videoHTML = (a.video && imgPrincipaleUrl && getMediaUrl(a.imgPrincipale)) ? `
+    <div class="video-section" style="margin-top:20px;margin-bottom:20px;padding:16px;background:#f0f9ff;border-radius:8px;border-left:4px solid #0284c7">
+      <h3 style="margin-top:0"><i class="fas fa-video" style="color:#0284c7"></i> Vidéo de présentation</h3>
+      <video width="100%" height="auto" controls style="max-height:500px;border-radius:8px;margin-top:10px;background:#000">
+        <source src="${getMediaUrl(a.video)}" type="video/mp4">
+        Votre navigateur ne supporte pas la balise vidéo.
+      </video>
+    </div>
+  ` : '';
+
   const commentsHTML = a.commentaires.map(c => `
     <div class="comment-item">
       <div class="comment-avatar">${c.auteur.charAt(0)}</div>
@@ -270,13 +394,11 @@ function voirDetail(id) {
   );
   const lienWA = `https://wa.me/${whatsappNumero}?text=${msgWA}`;
 
-  const imgPrincipaleUrl = getMediaUrl(a.imgPrincipale) || 'https://via.placeholder.com/800x400?text=Image+indisponible';
-
   document.getElementById('detailContent').innerHTML = `
     <div class="detail-layout">
       <div>
-        <div class="detail-img-main" id="detailImgMain" onclick="ouvrirGalerie('${a.id}', 0)">
-          <img src="${imgPrincipaleUrl}" alt="${a.titre}" id="detailImgPrincipale" />
+        <div class="detail-img-main" id="detailImgMain" ${imgPrincipaleUrl ? `onclick="ouvrirGalerie('${a.id}', 0)"` : ''}>
+          ${mainImageHTML}
         </div>
         <div class="detail-thumbs">${thumbsHTML}</div>
         <div class="detail-info-box">
@@ -289,6 +411,7 @@ function voirDetail(id) {
           <div class="stars" style="font-size:1rem">${genererEtoiles(a.note)} <span class="rating-val">${a.note}/5</span></div>
           <p class="detail-desc">${a.description}</p>
         </div>
+        ${videoHTML}
         ${docsHTML}
         <div class="comments-section">
           <h3><i class="fas fa-comments"></i> Commentaires & Avis (${a.commentaires.length})</h3>
@@ -321,16 +444,16 @@ function voirDetail(id) {
             <i class="fab fa-whatsapp"></i> Contacter via WhatsApp
           </a>
           <p style="font-size:0.78rem;color:var(--gray-mid);text-align:center;margin-top:12px">
-            <i class="fas fa-shield-alt"></i> Transaction sécurisée par le Cabinet Maitre BROU DRAMA & GOURIHI TITIRO
+            <i class="fas fa-shield-alt"></i> Transaction sécurisée par le Cabinet Maîtres BROU DRAMA & GOURIHI TITIRO
           </p>
         </div>
         <div class="sidebar-card" style="margin-top:16px">
-          <h3><i class="fas fa-balance-scale"></i> Cabinet Monsieur Maître BROU DRAMA & GOURIHI TITIRO</h3>
+          <h3><i class="fas fa-balance-scale"></i> Cabinet Maîtres BROU DRAMA & GOURIHI TITIRO</h3>
           <p style="font-size:0.85rem;color:var(--gray-mid);margin-bottom:10px">
             Experts en droit immobilier. Chaque annonce est vérifiée et sécurisée juridiquement.
           </p>
           <div style="font-size:0.82rem;color:var(--gray-mid)">
-            <div style="margin-bottom:6px"><i class="fas fa-phone" style="color:var(--blue);width:16px"></i> +225 05 75 94 41 67 / +225 01 52 82 60 51</div>
+            <div style="margin-bottom:6px"><i class="fas fa-phone" style="color:var(--blue);width:16px"></i> +225 05 94 13 32 43 </div>
             <div><i class="fas fa-envelope" style="color:var(--blue);width:16px"></i> cabinet2maitrebrou@gmail.com</div>
           </div>
         </div>
@@ -370,16 +493,32 @@ function ouvrirGalerie(id, indexDep = 0, mode = 'images', docIdx = 0) {
 }
 
 function afficherImageGalerie() {
-  const img = document.getElementById('galerieImg');
+  let mediaBox = document.getElementById('galerieMedia');
+  if (!mediaBox) {
+    const modal = document.getElementById('modalGalerie');
+    if (modal) {
+      const box = modal.querySelector('.modal-box') || modal;
+      mediaBox = document.createElement('div');
+      mediaBox.id = 'galerieMedia';
+      mediaBox.className = 'galerie-media';
+      const nav = box.querySelector('.galerie-nav');
+      if (nav) box.insertBefore(mediaBox, nav);
+      else box.appendChild(mediaBox);
+    }
+  }
   const count = document.getElementById('galerieCount');
   const thumbs = document.getElementById('galerieThumbs');
-
-  img.src = galerieImages[galerieIndex];
+  const src = galerieImages[galerieIndex];
+  const isVideo = src && (src.endsWith('.mp4') || src.endsWith('.webm') || src.endsWith('.mov') || src.includes('video'));
+  if (isVideo) {
+    mediaBox.innerHTML = `<video id="galerieVideo" controls style="max-width:100%;max-height:80vh;border-radius:8px;background:#000"><source src="${src}" type="video/mp4">Votre navigateur ne supporte pas la vidéo.</video>`;
+  } else {
+    mediaBox.innerHTML = `<img id="galerieImg" src="${src}" alt="Image" style="max-width:100%;max-height:80vh;border-radius:8px;object-fit:contain" />`;
+  }
   count.textContent = `${galerieIndex + 1} / ${galerieImages.length}`;
 
   thumbs.innerHTML = galerieImages.map((src, i) => `
-    <img src="${src}" class="${i === galerieIndex ? 'active-thumb' : ''}"
-         onclick="galerieGoTo(${i})" alt="Photo ${i + 1}" />
+    <img src="${src}" class="${i === galerieIndex ? 'active-thumb' : ''}" onclick="galerieGoTo(${i})" alt="Photo ${i + 1}" />
   `).join('');
 }
 
@@ -568,26 +707,62 @@ async function ajouterAnnonce(event) {
   formData.append('surface', document.getElementById('aSurface').value.trim());
   formData.append('description', document.getElementById('aDesc').value.trim());
 
+  // Récupération de l'image principale
   const imgMain = document.getElementById('aImgMain').files[0];
-  if (imgMain) {
-    if (!verifierTailleFichier(imgMain, 10)) return;
-    formData.append('img_principale', imgMain);
-  } else {
-    afficherToast('Veuillez sélectionner une image principale', 'error');
+  console.log('Image principale sélectionnée:', imgMain);
+
+  // Récupération de la vidéo (nouveau)
+  const videoFile = document.getElementById('aVideo').files[0];
+  console.log('Vidéo sélectionnée:', videoFile);
+
+  // Validation : au moins une image OU une vidéo doit être fournie
+  if (!imgMain && !videoFile) {
+    afficherToast('Veuillez sélectionner au moins une image principale OU une vidéo', 'error');
     return;
   }
 
+  // Ajout de l'image principale si elle existe
+  if (imgMain) {
+    if (!verifierTailleFichier(imgMain, 10)) return;
+    formData.append('img_principale', imgMain);
+  }
+
+  // Ajout de la vidéo si elle existe (nouveau)
+  if (videoFile) {
+    // Validation de la taille (max 100 Mo)
+    if (!verifierTailleFichier(videoFile, 100)) return;
+
+    // Validation de l'extension
+    const extensionsAutorisees = ['mp4', 'webm', 'mov', 'avi'];
+    const extension = videoFile.name.split('.').pop().toLowerCase();
+    if (!extensionsAutorisees.includes(extension)) {
+      afficherToast(`❌ Format vidéo non autorisé. Extensions acceptées: ${extensionsAutorisees.join(', ')}`, 'error');
+      return;
+    }
+
+    formData.append('video', videoFile);
+  }
+
+  // Ajout des images secondaires
   const imgsSecond = document.getElementById('aImgsSecond').files;
   for (let i = 0; i < imgsSecond.length; i++) {
     if (!verifierTailleFichier(imgsSecond[i], 10)) return;
     formData.append('images', imgsSecond[i]);
   }
 
+  // Ajout des documents
   const docs = document.getElementById('aDocs').files;
   for (let i = 0; i < docs.length; i++) {
     if (!verifierTailleFichier(docs[i], 10)) return;
     formData.append('documents', docs[i]);
   }
+
+  // Log du contenu de FormData pour déboguer
+  console.log('=== CONTENU DU FORMDATA ===');
+  for (let pair of formData.entries()) {
+    console.log(pair[0] + ': ' + (pair[1].name || pair[1]));
+  }
+  console.log('===========================');
 
   try {
     const response = await fetch('/api/annonces/creer/', {
@@ -622,11 +797,18 @@ function renderAdminList() {
   }
 
   list.innerHTML = annonces.map(a => {
-    const imgUrl = getMediaUrl(a.imgPrincipale) || 'https://via.placeholder.com/56x44?text=?';
+    let imgUrl = getMediaUrl(a.imgPrincipale);
+    let imgBackgroundHTML = '';
+    if (!imgUrl && a.video) {
+      imgBackgroundHTML = `style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display:flex; align-items:center; justify-content:center; color:white; font-size:24px;"`;
+      imgUrl = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Ctext x=%2250%22 y=%2260%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2240%22%3E▶%3C/text%3E%3C/svg%3E';
+    } else if (!imgUrl) {
+      imgBackgroundHTML = `style="background:#ccc; display:flex; align-items:center; justify-content:center; color:#999;"`;  
+      imgUrl = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Ctext x=%2250%22 y=%2260%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2250%22%3E?%3C/text%3E%3C/svg%3E';
+    }
     return `
       <div class="admin-row">
-        <img src="${imgUrl}" alt="${a.titre}"
-             onerror="this.src='https://via.placeholder.com/56x44?text=?'" />
+        <img src="${imgUrl}" alt="${a.titre}" ${imgBackgroundHTML} />
         <div class="admin-info">
           <strong>#${a.id} – ${a.titre}</strong>
           <span>${a.ville}, ${a.quartier} · ${capitaliser(a.type)} · ${a.prix}</span>
