@@ -15,6 +15,7 @@ class AnnonceAdmin(admin.ModelAdmin):
     list_filter = ['type', 'est_publie']
     search_fields = ['titre', 'ville']
     inlines = [ImageInline, DocumentInline]
+    exclude = ('video',)
     
     # Champs à afficher dans le formulaire d'ajout/modification
     fieldsets = (
@@ -32,6 +33,10 @@ class AnnonceAdmin(admin.ModelAdmin):
         }),
         ('Note', {
             'fields': ('note',)
+        }),
+        ('Dates', {
+            'fields': ('date_creation', 'date_modification'),
+            'classes': ('collapse',)
         }),
     )
     readonly_fields = ('id_annonce', 'date_creation', 'date_modification')

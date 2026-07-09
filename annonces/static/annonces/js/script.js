@@ -112,15 +112,15 @@ function retourAccueil() {
 }
 
 // Fonction utilitaire pour corriger les URLs des fichiers uploadés
-function getMediaUrl(path) {
+function getMediaUrl(path, cacheBuster = false) {
   if (!path) return null;
   if (path.startsWith('http://') || path.startsWith('https://')) {
-    return path;
+    return cacheBuster ? `${path}?v=${Date.now()}` : path;
   }
   if (path.startsWith('/media/')) {
-    return path;
+    return cacheBuster ? `${path}?v=${Date.now()}` : path;
   }
-  return `/media/${path}`;
+  return cacheBuster ? `/media/${path}?v=${Date.now()}` : `/media/${path}`;
 }
 
 // Fonction pour extraire la première frame d'une vidéo et la convertir en image
@@ -187,7 +187,7 @@ function creerCarteHTML(a) {
   if (!imgUrl && a.video) {
     imgUrl = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 800 400%22%3E%3Crect fill=%22%23667eea%22 width=%22800%22 height=%22400%22/%3E%3Ctext x=%22400%22 y=%22200%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22white%22 font-size=%2280%22%3E▶ Vidéo%3C/text%3E%3C/svg%3E';
     isVideo = true;
-    videoAttr = `data-video-url="${getMediaUrl(a.video)}"`;
+    videoAttr = `data-video-url="${getMediaUrl(a.video, true)}"`;
   } else if (!imgUrl) {
     imgUrl = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 800 400%22%3E%3Crect fill=%22%23e5e7eb%22 width=%22800%22 height=%22400%22/%3E%3Ctext x=%22400%22 y=%22200%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23999%22 font-size=%2250%22%3E? Image non disponible%3C/text%3E%3C/svg%3E';
   }
@@ -320,10 +320,22 @@ function voirDetail(id) {
 
   annonceActive = a;
 
-  const thumbsHTML = a.images.map((img, i) => {
+  const mainImageUrl = a.imgPrincipale ? getMediaUrl(a.imgPrincipale) : null;
+  let thumbsHTML = '';
+
+  if (mainImageUrl) {
+    thumbsHTML += `
+      <div class="detail-thumb active" onclick="changerImgDetail(this,'${mainImageUrl}',0); ouvrirGalerie('${a.id}', 0)">
+        <img src="${mainImageUrl}" alt="Image principale" />
+      </div>
+    `;
+  }
+
+  thumbsHTML += (a.images || []).map((img, i) => {
     const imgUrl = getMediaUrl(img);
+    const thumbIndex = mainImageUrl ? i + 1 : i;
     return `
-      <div class="detail-thumb ${i === 0 ? 'active' : ''}" onclick="changerImgDetail(this,'${imgUrl}',${i}); ouvrirGalerie('${a.id}', ${i})">
+      <div class="detail-thumb ${thumbIndex === 0 ? 'active' : ''}" onclick="changerImgDetail(this,'${imgUrl}',${thumbIndex}); ouvrirGalerie('${a.id}', ${thumbIndex})">
         <img src="${imgUrl}" alt="Photo ${i + 1}" />
       </div>
     `;
@@ -356,7 +368,7 @@ function voirDetail(id) {
     // Pas d'image mais vidéo existe : afficher la vidéo directement à la place
     mainImageHTML = `
       <video width="100%" height="400" controls style="border-radius:8px;background:#000;object-fit:contain">
-        <source src="${getMediaUrl(a.video)}" type="video/mp4">
+        <source src="${getMediaUrl(a.video, true)}" type="video/mp4">
         Votre navigateur ne supporte pas la balise vidéo.
       </video>
     `;
@@ -371,7 +383,7 @@ function voirDetail(id) {
     <div class="video-section" style="margin-top:20px;margin-bottom:20px;padding:16px;background:#f0f9ff;border-radius:8px;border-left:4px solid #0284c7">
       <h3 style="margin-top:0"><i class="fas fa-video" style="color:#0284c7"></i> Vidéo de présentation</h3>
       <video width="100%" height="auto" controls style="max-height:500px;border-radius:8px;margin-top:10px;background:#000">
-        <source src="${getMediaUrl(a.video)}" type="video/mp4">
+        <source src="${getMediaUrl(a.video, true)}" type="video/mp4">
         Votre navigateur ne supporte pas la balise vidéo.
       </video>
     </div>
@@ -485,14 +497,16 @@ function ouvrirGalerie(id, indexDep = 0, mode = 'images', docIdx = 0) {
     galerieIndex = docIdx;
   } else {
     const imgs = a.images || [];
-    if (imgs.length === 0 && a.video) {
-      // Si pas d'images mais vidéo disponible, montrer la vidéo dans la galerie
-      galerieImages = [getMediaUrl(a.video)];
-      galerieIndex = 0;
-    } else {
-      galerieImages = imgs.map(img => getMediaUrl(img));
-      galerieIndex = indexDep;
+    galerieImages = [];
+
+    if (a.imgPrincipale) {
+      galerieImages.push(getMediaUrl(a.imgPrincipale));
+    } else if (a.video) {
+      galerieImages.push(getMediaUrl(a.video));
     }
+
+    galerieImages = galerieImages.concat(imgs.map(img => getMediaUrl(img)));
+    galerieIndex = indexDep;
   }
 
   // Si aucune ressource à afficher, ne rien faire
@@ -850,6 +864,7 @@ function ouvrirEditAnnonce(id) {
   document.getElementById('editSurface').value = a.surface || '';
   document.getElementById('editDescription').value = a.description;
   document.getElementById('editImgPrincipale').value = '';
+  document.getElementById('editImagesSecondaires').value = '';
   document.getElementById('modalEditAnnonce').classList.remove('hidden');
 }
 
@@ -874,6 +889,13 @@ async function soumettreEditAnnonce(event) {
   if (imgFile) {
     if (!verifierTailleFichier(imgFile, 10)) return;
     formData.append('img_principale', imgFile);
+  }
+
+  // Ajouter les images secondaires
+  const imgsSecondairesList = document.getElementById('editImagesSecondaires').files;
+  for (let i = 0; i < imgsSecondairesList.length; i++) {
+    if (!verifierTailleFichier(imgsSecondairesList[i], 10)) return;
+    formData.append('images', imgsSecondairesList[i]);
   }
 
   // Ajouter un paramètre _method pour simuler PUT

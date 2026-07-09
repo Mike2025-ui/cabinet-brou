@@ -24,6 +24,8 @@ class Annonce(models.Model):
     
     # Images (upload depuis l'ordinateur)
     img_principale = models.ImageField(upload_to='annonces/images/', blank=True, null=True)
+    # Vidéo de présentation
+    video = models.FileField(upload_to='annonces/videos/', blank=True, null=True)
     
     # Note moyenne
     note = models.FloatField(default=0, validators=[MinValueValidator(0), MaxValueValidator(5)])

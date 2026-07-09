@@ -63,6 +63,7 @@ def api_annonces(request):
             'surface': a.surface or '',
             'description': a.description,
             'imgPrincipale': a.img_principale.url if a.img_principale else '',
+            'video': a.video.url if a.video else '',
             'images': images_urls,
             'documents': documents_list,
             'note': float(a.note),
@@ -98,6 +99,7 @@ def api_annonce_detail(request, id_annonce):
         'surface': annonce.surface or '',
         'description': annonce.description,
         'imgPrincipale': annonce.img_principale.url if annonce.img_principale else '',
+        'video': annonce.video.url if annonce.video else '',
         'images': images_urls,
         'documents': documents_list,
         'note': float(annonce.note),
@@ -135,6 +137,8 @@ def creer_annonce(request):
         
         if request.FILES.get('img_principale'):
             annonce.img_principale = request.FILES['img_principale']
+        if request.FILES.get('video'):
+            annonce.video = request.FILES['video']
         
         annonce.sauvegarder_avec_id()
         
@@ -160,6 +164,11 @@ def supprimer_annonce(request, id_annonce):
                 os.remove(os.path.join(settings.MEDIA_ROOT, str(annonce.img_principale)))
             except:
                 pass
+        if annonce.video:
+            try:
+                os.remove(os.path.join(settings.MEDIA_ROOT, str(annonce.video)))
+            except:
+                pass
         annonce.delete()
         return JsonResponse({'success': True})
     except Annonce.DoesNotExist:
@@ -183,12 +192,18 @@ def modifier_annonce(request, id_annonce):
         if request.FILES.get('img_principale'):
             if annonce.img_principale:
                 try:
-                    os.remove(os.path.join(settings.MEDIA_ROOT, str(annonce.img_principale)))
+                    annonce.img_principale.delete(save=False)
                 except:
                     pass
             annonce.img_principale = request.FILES['img_principale']
         
         annonce.save()
+        
+        # Ajouter les images secondaires
+        images_files = request.FILES.getlist('images')
+        if images_files:
+            for img_file in images_files:
+                Image.objects.create(annonce=annonce, image=img_file)
         
         return JsonResponse({'success': True})
     except Annonce.DoesNotExist:

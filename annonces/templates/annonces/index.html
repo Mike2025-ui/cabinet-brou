@@ -11,8 +11,10 @@
 
     <!-- Notre feuille de style principale -->
     <link rel="stylesheet" href="{% static 'annonces/css/style.css' %}" />
-    <!-- Favicon -->
+    <!-- Favicon using logo image -->
     <link rel="icon" href="{% static 'annonces/images/logo.jpg' %}" type="image/jpeg" />
+    <link rel="shortcut icon" href="{% static 'annonces/images/logo.jpg' %}" type="image/jpeg" />
+    <link rel="apple-touch-icon" href="{% static 'annonces/images/logo.jpg' %}" />
   </head>
 
   {% if show_admin %}
@@ -24,9 +26,40 @@
   {% endif %}
 
   <body>
-    <!--          ============================================================
+    <script>
+      window.showPage = window.showPage || function () {}
+      window.toggleMenu = window.toggleMenu || function () {}
+      window.setFiltre = window.setFiltre || function () {}
+      window.filterAnnonces = window.filterAnnonces || function () {}
+      window.filterAnnonces2 = window.filterAnnonces2 || function () {}
+      window.voirDetail = window.voirDetail || function () {}
+      window.ouvrirGalerie = window.ouvrirGalerie || function () {}
+      window.retourAccueil = window.retourAccueil || function () {}
+      window.ouvrirContact = window.ouvrirContact || function () {}
+      window.ajouterAnnonce =
+        window.ajouterAnnonce ||
+        function () {
+          return false
+        }
+      window.envoyerContact =
+        window.envoyerContact ||
+        function () {
+          return false
+        }
+      window.fermerGalerie = window.fermerGalerie || function () {}
+      window.fermerContact = window.fermerContact || function () {}
+      window.ajouterCommentaire = window.ajouterCommentaire || function () {}
+      window.ouvrirWhatsApp = window.ouvrirWhatsApp || function () {}
+      window.soumettreEditAnnonce =
+        window.soumettreEditAnnonce ||
+        function () {
+          return false
+        }
+      window.fermerEditAnnonce = window.fermerEditAnnonce || function () {}
+    </script>
+    <!--                ============================================================
      BARRE DE NAVIGATION
-============================================================          -->
+============================================================                -->
     <header id="navbar">
       <div class="nav-container">
         <div class="nav-logo">
@@ -43,9 +76,9 @@
       </div>
     </header>
 
-    <!--          ============================================================
+    <!--                ============================================================
      PAGE : ACCUEIL
-============================================================          -->
+============================================================                -->
     <div id="page-accueil" class="page active">
       <section class="hero">
         <div class="hero-content">
@@ -131,9 +164,9 @@
       </section>
     </div>
 
-    <!--          ============================================================
+    <!--                ============================================================
      PAGE : ANNONCES (liste complète)
-============================================================          -->
+============================================================                -->
     <div id="page-annonces" class="page">
       <section class="annonces-section">
         <div class="container">
@@ -149,9 +182,9 @@
       </section>
     </div>
 
-    <!--          ============================================================
+    <!--                ============================================================
      PAGE : DÉTAIL D'UNE ANNONCE
-============================================================          -->
+============================================================                -->
     <div id="page-detail" class="page">
       <div class="container">
         <button class="btn-retour" onclick="retourAccueil()"><i class="fas fa-arrow-left"></i> Retour aux annonces</button>
@@ -159,9 +192,9 @@
       </div>
     </div>
 
-    <!--          ============================================================
+    <!--                ============================================================
      PAGE : NOTRE CABINET
-============================================================          -->
+============================================================                -->
     <div id="page-cabinet" class="page">
       <div class="cabinet-hero">
         <div class="container">
@@ -221,9 +254,9 @@
       </div>
     </div>
 
-    <!--          ============================================================
+    <!--                ============================================================
      PAGE : CONTACT
-============================================================          -->
+============================================================                -->
     <div id="page-contact" class="page">
       <div class="container">
         <div class="section-header">
@@ -276,9 +309,9 @@
       </div>
     </div>
 
-    <!--          ============================================================
+    <!--                ============================================================
      PAGE : ADMIN (tableau de bord)
-============================================================          -->
+============================================================                -->
     <div id="page-admin" class="page">
       <div class="container">
         <div class="section-header">
@@ -415,14 +448,19 @@
             <input type="file" id="editImgPrincipale" accept="image/*" />
             <small style="display: block; margin-top: 5px; color: #64748B;"><i class="fas fa-info-circle"></i> Taille max : 10 MB</small>
           </div>
+          <div class="form-group">
+            <label>Images secondaires (laisser vide pour garder les actuelles)</label>
+            <input type="file" id="editImagesSecondaires" accept="image/*" multiple />
+            <small style="display: block; margin-top: 5px; color: #64748B;"><i class="fas fa-info-circle"></i> Vous pouvez sélectionner plusieurs images. Taille max : 10 MB par image</small>
+          </div>
           <button type="submit" class="btn-primary"><i class="fas fa-save"></i> Enregistrer</button>
         </form>
       </div>
     </div>
 
-    <!--          ============================================================
+    <!--                ============================================================
      FOOTER
-============================================================          -->
+============================================================                -->
     <footer>
       <div class="container footer-grid">
         <div class="footer-col">
@@ -481,9 +519,9 @@
       </div>
     </footer>
 
-    <!--          ============================================================
+    <!--                ============================================================
      MODAL : GALERIE D'IMAGES
-============================================================          -->
+============================================================                -->
     <div id="modalGalerie" class="modal hidden">
       <div class="modal-overlay" onclick="fermerGalerie()"></div>
       <div class="modal-box galerie-box">
@@ -498,9 +536,9 @@
       </div>
     </div>
 
-    <!--          ============================================================
+    <!--                ============================================================
      MODAL : FORMULAIRE DE CONTACT (JE SUIS INTÉRESSÉ)
-============================================================          -->
+============================================================                -->
     <div id="modalContact" class="modal hidden">
       <div class="modal-overlay" onclick="fermerContact()"></div>
       <div class="modal-box contact-modal-box">
@@ -537,9 +575,9 @@
       </div>
     </div>
 
-    <!--          ============================================================
+    <!--                ============================================================
      TOAST (notification succès / erreur)
-============================================================          -->
+============================================================                -->
     <div id="toast" class="toast hidden"></div>
 
     <!-- Notre script principal -->

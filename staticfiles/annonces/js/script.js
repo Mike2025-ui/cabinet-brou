@@ -836,6 +836,7 @@ function ouvrirEditAnnonce(id) {
   document.getElementById('editSurface').value = a.surface || '';
   document.getElementById('editDescription').value = a.description;
   document.getElementById('editImgPrincipale').value = '';
+  document.getElementById('editImagesSecondaires').value = '';
   document.getElementById('modalEditAnnonce').classList.remove('hidden');
 }
 
@@ -860,6 +861,13 @@ async function soumettreEditAnnonce(event) {
   if (imgFile) {
     if (!verifierTailleFichier(imgFile, 10)) return;
     formData.append('img_principale', imgFile);
+  }
+
+  // Ajouter les images secondaires
+  const imgsSecondairesList = document.getElementById('editImagesSecondaires').files;
+  for (let i = 0; i < imgsSecondairesList.length; i++) {
+    if (!verifierTailleFichier(imgsSecondairesList[i], 10)) return;
+    formData.append('images', imgsSecondairesList[i]);
   }
 
   // Ajouter un paramètre _method pour simuler PUT
