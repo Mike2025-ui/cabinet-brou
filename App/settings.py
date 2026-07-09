@@ -26,7 +26,7 @@ ALLOWED_HOSTS = [
     '89.116.26.232',  # IP publique du serveur
     'hebruni-immobilier.com',
     'www.hebruni-immobilier.com',
-    '*',  # Pour les tests (à enlever quand tout est stable)
+      # Pour les tests (à enlever quand tout est stable)
 ]
 
 # Application definition
@@ -151,6 +151,16 @@ LOGGING = {
         'level': 'INFO',
     },
 }
+
+# CSRF Configuration - Autoriser les domaines de confiance
+CSRF_TRUSTED_ORIGINS = [
+    'https://hebruni-immobilier.com',
+    'https://www.hebruni-immobilier.com',
+    'http://hebruni-immobilier.com',
+    'http://www.hebruni-immobilier.com',
+    'http://89.116.26.232',
+]
+
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # Ajout du support MIME pour les fichiers .jfif (JPEG File Interchange Format)
 import mimetypes
