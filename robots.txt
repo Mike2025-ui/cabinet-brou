@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /admin-cabinet-bou-2024/
+Disallow: /api/
+
+Sitemap: https://hebruni-immobilier.com/sitemap.xml

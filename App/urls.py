@@ -9,16 +9,24 @@ from django.conf.urls.static import static
 from django.views.static import serve  # 👈 AJOUT IMPORTANT
 from django.urls import re_path       # 👈 AJOUT IMPORTANT
 from django.http import HttpResponse
+from django.contrib.sitemaps.views import sitemap
+from annonces.sitemaps import sitemaps
 
 # Vue pour le health check
 def health_check(request):
     return HttpResponse("OK", status=200)
+
+# Vue pour robots.txt
+def robots_txt(request):
+    return serve(request, 'robots.txt', document_root=settings.BASE_DIR)
 
 urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
     path('admin/', admin.site.urls),
     path('', include('annonces.urls')),
     path('health/', health_check),
+    path('robots.txt', robots_txt),
+    path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='sitemap'),
 ]
 
 # 👇 SERVI LES MÉDIAS EN FORCE (même avec DEBUG=False)
