@@ -5,6 +5,8 @@ from django.views.decorators.http import require_http_methods
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.contrib import messages
+from django.views.decorators.cache import cache_page
+from django.utils.decorators import method_decorator
 from .models import Annonce, Image, Document, Commentaire, DemandeContact
 import json
 from django.conf import settings
@@ -38,6 +40,7 @@ def force_logout(request):
 # API POUR LE JAVASCRIPT
 # ============================================================
 
+@cache_page(60 * 5)  # Cache 5 minutes
 def api_annonces(request):
     """API qui retourne TOUTES les annonces au format JSON"""
     annonces = Annonce.objects.filter(est_publie=True)
@@ -70,7 +73,9 @@ def api_annonces(request):
             'commentaires': commentaires_list
         })
     
-    return JsonResponse(data, safe=False)
+    response = JsonResponse(data, safe=False)
+    response['Cache-Control'] = 'public, max-age=300'  # 5 minutes
+    return response
 
 
 def api_annonce_detail(request, id_annonce):
@@ -236,6 +241,57 @@ def ajouter_commentaire(request, id_annonce):
         return JsonResponse({'error': 'Annonce non trouvée'}, status=404)
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=400)
+
+
+@require_http_methods(["GET"])
+def schema_annonces(request):
+    """Retourne le JSON-LD des annonces pour le SEO"""
+    annonces = Annonce.objects.filter(est_publie=True)
+    
+    schema_items = []
+    for a in annonces:
+        images = [img.image.url if img.image else '' for img in a.images.all()]
+        if a.img_principale:
+            images.insert(0, a.img_principale.url)
+        
+        schema_item = {
+            "@context": "https://schema.org",
+            "@type": "RealEstateProperty",
+            "url": f"https://hebruni-immobilier.com/?annonce={a.id_annonce}",
+            "name": a.titre,
+            "description": a.description,
+            "image": images,
+            "price": a.prix,
+            "priceCurrency": "XOF",
+            "address": {
+                "@type": "PostalAddress",
+                "streetAddress": a.quartier,
+                "addressLocality": a.ville,
+                "addressCountry": "CI"
+            },
+            "offers": {
+                "@type": "Offer",
+                "priceCurrency": "XOF",
+                "price": a.prix
+            },
+            "aggregateRating": {
+                "@type": "AggregateRating",
+                "ratingValue": float(a.note),
+                "reviewCount": a.commentaires.count()
+            }
+        }
+        if a.surface:
+            schema_item["floorSize"] = {
+                "@type": "QuantitativeValue",
+                "value": a.surface,
+                "unitCode": "m2"
+            }
+        
+        schema_items.append(schema_item)
+    
+    response = JsonResponse(schema_items, safe=False)
+    response['Content-Type'] = 'application/ld+json'
+    return response
 
 
 # ============================================================

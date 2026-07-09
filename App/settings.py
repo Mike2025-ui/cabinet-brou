@@ -125,6 +125,18 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 10240
 DATA_UPLOAD_MAX_NUMBER_FILES = 100
 
+# Cache Configuration (pour SEO et performance)
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'unique-snowflake',
+        'TIMEOUT': 300,  # 5 minutes
+    }
+}
+
+# Compression GZIP
+MIDDLEWARE.insert(4, 'django.middleware.gzip.GZipMiddleware')
+
 # Logging (optionnel mais utile)
 LOGGING = {
     'version': 1,

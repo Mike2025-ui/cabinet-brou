@@ -12,6 +12,8 @@
     <meta name="robots" content="index, follow" />
     <meta name="author" content="Cabinet Maîtres BROU DRAMA & GOURIHI TITIRO" />
     <meta name="language" content="French" />
+    <link rel="canonical" href="https://hebruni-immobilier.com/" />
+    <meta name="theme-color" content="#1e40af" />
 
     <!-- Open Graph Tags (Réseaux sociaux) -->
     <meta property="og:title" content="CABINET MAITRES BROU DRAMA & GOURIHI TITIRO – Immobilier/Juridique" />
@@ -24,6 +26,64 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="CABINET MAITRES BROU DRAMA & GOURIHI TITIRO" />
     <meta name="twitter:description" content="Cabinet juridique spécialisé en droit immobilier" />
+
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "name": "Cabinet BROU DRAMA GOURIHI TITIRO",
+      "image": "https://hebruni-immobilier.com/static/annonces/images/logo.jpg",
+      "description": "Cabinet juridique specialise en droit immobilier. Achat, vente, location de terrains et immeubles.",
+      "url": "https://hebruni-immobilier.com",
+      "telephone": "+2250594133243",
+      "priceRange": "$$",
+      "areaServed": "CI",
+      "serviceType": "Legal Services",
+      "sameAs": [
+        "https://www.facebook.com/share/1EP9GVy4eY/?mibextid=wwXIfr"
+      ],
+      "contact": {
+        "@type": "ContactPoint",
+        "contactType": "Customer Service",
+        "telephone": "+2250594133243",
+        "availableLanguage": ["fr"]
+      }
+    }
+    </script>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Accueil",
+          "item": "https://hebruni-immobilier.com"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Annonces",
+          "item": "https://hebruni-immobilier.com/#annonces"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Notre Cabinet",
+          "item": "https://hebruni-immobilier.com/#cabinet"
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "name": "Contact",
+          "item": "https://hebruni-immobilier.com/#contact"
+        }
+      ]
+    }
+    </script>
 
     <!-- Icônes Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
@@ -76,9 +136,9 @@
         }
       window.fermerEditAnnonce = window.fermerEditAnnonce || function () {}
     </script>
-    <!--                  ============================================================
+    <!--                   ============================================================
      BARRE DE NAVIGATION
-============================================================                  -->
+============================================================                   -->
     <header id="navbar">
       <div class="nav-container">
         <div class="nav-logo">
@@ -95,15 +155,15 @@
       </div>
     </header>
 
-    <!--                  ============================================================
+    <!--                   ============================================================
      PAGE : ACCUEIL
-============================================================                  -->
+============================================================                   -->
     <div id="page-accueil" class="page active">
       <section class="hero">
         <div class="hero-content">
           <p class="hero-tag">Cabinet Juridique Immobilier</p>
           <h1>Trouvez votre <span class="highlight">bien immobilier</span><br />en toute sécurité juridique</h1>
-          <p class="hero-sub">Assistance Judiciaire, Location de Terres, Bail Emphytéotique, Partenariat Agrilcole, Recherche de Financement — Nous Vous Accompagnons A Chaque Etape.</p>
+          <p class="hero-sub">Assistance Judiciaire, Location de Terres, Bail Emphytéotique, Partenariat Agricole, Recherche de Financement — Nous Vous Accompagnons À Chaque Étape.</p>
           <div class="hero-search">
             <input type="text" id="searchInput" placeholder="Rechercher par ville, quartier…" oninput="filterAnnonces()" />
             <button onclick="filterAnnonces()"><i class="fas fa-search"></i> Rechercher</button>
@@ -132,7 +192,7 @@
             <button class="filtre-btn" onclick="setFiltre(this,'terrain')">Terrain</button>
             <button class="filtre-btn" onclick="setFiltre(this,'Location de Terres')">Location de Terres</button>
             <button class="filtre-btn" onclick="setFiltre(this,'Bail Emphytéotique')">Bail Emphytéotique</button>
-            <button class="filtre-btn" onclick="setFiltre(this,'Partenariat Agrilcole')">Partenariat Agrilcole</button>
+            <button class="filtre-btn" onclick="setFiltre(this,'Partenariat Agricole')">Partenariat Agricole</button>
             <button class="filtre-btn" onclick="setFiltre(this,'Recherche de Financement')">Recherche de Financement</button>
           </div>
         </div>
@@ -176,16 +236,16 @@
             <div class="why-card">
               <i class="fas fa-clock"></i>
               <h3>Réactivité</h3>
-              <p>Réponse Garantie Sous 24H Pour Toute Demande.</p>
+              <p>Réponse Garantie Sous 24h Pour Toute Demande.</p>
             </div>
           </div>
         </div>
       </section>
     </div>
 
-    <!--                  ============================================================
+    <!--                   ============================================================
      PAGE : ANNONCES (liste complète)
-============================================================                  -->
+============================================================                   -->
     <div id="page-annonces" class="page">
       <section class="annonces-section">
         <div class="container">
@@ -201,9 +261,9 @@
       </section>
     </div>
 
-    <!--                  ============================================================
+    <!--                   ============================================================
      PAGE : DÉTAIL D'UNE ANNONCE
-============================================================                  -->
+============================================================                   -->
     <div id="page-detail" class="page">
       <div class="container">
         <button class="btn-retour" onclick="retourAccueil()"><i class="fas fa-arrow-left"></i> Retour aux annonces</button>
@@ -211,9 +271,9 @@
       </div>
     </div>
 
-    <!--                  ============================================================
+    <!--                   ============================================================
      PAGE : NOTRE CABINET
-============================================================                  -->
+============================================================                   -->
     <div id="page-cabinet" class="page">
       <div class="cabinet-hero">
         <div class="container">
@@ -273,9 +333,9 @@
       </div>
     </div>
 
-    <!--                  ============================================================
+    <!--                   ============================================================
      PAGE : CONTACT
-============================================================                  -->
+============================================================                   -->
     <div id="page-contact" class="page">
       <div class="container">
         <div class="section-header">
@@ -328,9 +388,9 @@
       </div>
     </div>
 
-    <!--                  ============================================================
+    <!--                   ============================================================
      PAGE : ADMIN (tableau de bord)
-============================================================                  -->
+============================================================                   -->
     <div id="page-admin" class="page">
       <div class="container">
         <div class="section-header">
@@ -353,7 +413,7 @@
                   <option value="terrain">Terrain</option>
                   <option value="Location de Terres">Location de Terres</option>
                   <option value="Bail Emphytéotique">Bail Emphytéotique</option>
-                  <option value="Partenariat Agrilcole">Partenariat Agrilcole</option>
+                  <option value="Partenariat Agricole">Partenariat Agricole</option>
                   <option value="Amenagement">Aménagement</option>
                   <option value="Recherche de Financement">Recherche de Financement</option>
                 </select>
@@ -437,7 +497,7 @@
               <option value="terrain">Terrain</option>
               <option value="Location de Terres">Location de Terres</option>
               <option value="Bail Emphytéotique">Bail Emphytéotique</option>
-              <option value="Partenariat Agrilcole">Partenariat Agrilcole</option>
+              <option value="Partenariat Agricole">Partenariat Agricole</option>
               <option value="Amenagement">Aménagement</option>
               <option value="Recherche de Financement">Recherche de Financement</option>
             </select>
@@ -477,9 +537,9 @@
       </div>
     </div>
 
-    <!--                  ============================================================
+    <!--                   ============================================================
      FOOTER
-============================================================                  -->
+============================================================                   -->
     <footer>
       <div class="container footer-grid">
         <div class="footer-col">
@@ -538,9 +598,9 @@
       </div>
     </footer>
 
-    <!--                  ============================================================
+    <!--                   ============================================================
      MODAL : GALERIE D'IMAGES
-============================================================                  -->
+============================================================                   -->
     <div id="modalGalerie" class="modal hidden">
       <div class="modal-overlay" onclick="fermerGalerie()"></div>
       <div class="modal-box galerie-box">
@@ -555,9 +615,9 @@
       </div>
     </div>
 
-    <!--                  ============================================================
+    <!--                   ============================================================
      MODAL : FORMULAIRE DE CONTACT (JE SUIS INTÉRESSÉ)
-============================================================                  -->
+============================================================                   -->
     <div id="modalContact" class="modal hidden">
       <div class="modal-overlay" onclick="fermerContact()"></div>
       <div class="modal-box contact-modal-box">
@@ -594,9 +654,9 @@
       </div>
     </div>
 
-    <!--                  ============================================================
+    <!--                   ============================================================
      TOAST (notification succès / erreur)
-============================================================                  -->
+============================================================                   -->
     <div id="toast" class="toast hidden"></div>
 
     <!-- Notre script principal -->

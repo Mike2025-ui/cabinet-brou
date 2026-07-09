@@ -13,6 +13,11 @@ class StaticSitemap(Sitemap):
     def location(self, item):
         return reverse(item)
 
+    def lastmod(self, item):
+        # Retourne la date de modification la plus récente des annonces
+        latest = Annonce.objects.filter(est_publie=True).order_by('-date_modification').first()
+        return latest.date_modification if latest else None
+
 
 class AnnonceSitemap(Sitemap):
     """Sitemap pour les annonces"""
@@ -20,13 +25,26 @@ class AnnonceSitemap(Sitemap):
     priority = 0.9
 
     def items(self):
-        return Annonce.objects.filter(est_publie=True)
+        return Annonce.objects.filter(est_publie=True).order_by('-date_modification')
 
     def lastmod(self, obj):
         return obj.date_modification
 
     def location(self, obj):
-        return f"/?annonce={obj.id}"
+        return f"/?annonce={obj.id_annonce}"
+
+    def get_urls(self, site=None, **kwargs):
+        """Personnalise les URLs du sitemap pour inclure les images"""
+        urls = super().get_urls(site=site, **kwargs)
+        
+        for url in urls:
+            annonce_id = url['item'].id_annonce
+            images = [img.image.url for img in url['item'].images.all()]
+            
+            if images:
+                url['image'] = [{'loc': img} for img in images]
+        
+        return urls
 
 
 sitemaps = {
