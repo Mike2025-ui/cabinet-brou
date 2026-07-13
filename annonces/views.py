@@ -40,7 +40,8 @@ def force_logout(request):
 # API POUR LE JAVASCRIPT
 # ============================================================
 
-@cache_page(60 * 5)  # Cache 5 minutes
+# NOTE: Ne pas cacher l'API des annonces pour permettre un rafraîchissement immédiat
+# après création, modification ou suppression d'annonces.
 def api_annonces(request):
     """API qui retourne TOUTES les annonces au format JSON"""
     annonces = Annonce.objects.filter(est_publie=True)
@@ -201,6 +202,14 @@ def modifier_annonce(request, id_annonce):
                 except:
                     pass
             annonce.img_principale = request.FILES['img_principale']
+
+        if request.FILES.get('video'):
+            if annonce.video:
+                try:
+                    annonce.video.delete(save=False)
+                except:
+                    pass
+            annonce.video = request.FILES['video']
         
         annonce.save()
         

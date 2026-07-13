@@ -57,7 +57,7 @@ function verifierTailleFichier(fichier, maxMB = 10) {
 // Charge les annonces depuis l'API Django
 async function chargerAnnonces() {
   try {
-    const response = await fetch('/api/annonces/');
+    const response = await fetch('/api/annonces/', { cache: 'no-cache', credentials: 'same-origin' });
     const data = await response.json();
     annonces = data;
 
@@ -802,12 +802,15 @@ async function ajouterAnnonce(event) {
     });
 
     if (response.ok) {
+      const result = await response.json().catch(() => null);
+      console.log('✅ Annonce créée avec succès', response.status, result);
+      afficherToast('✅ Annonce publiée avec succès !', 'success');
       await chargerAnnonces();
       document.getElementById('adminForm').reset();
-      afficherToast('✅ Annonce publiée avec succès !', 'success');
     } else {
-      const error = await response.json();
-      afficherToast('Erreur: ' + (error.error || 'Problème lors de la création'), 'error');
+      const error = await response.json().catch(() => null);
+      console.error('❌ Erreur création annonce', response.status, error);
+      afficherToast('Erreur: ' + (error?.error || 'Problème lors de la création'), 'error');
     }
   } catch (error) {
     console.error('Erreur:', error);
@@ -864,6 +867,7 @@ function ouvrirEditAnnonce(id) {
   document.getElementById('editSurface').value = a.surface || '';
   document.getElementById('editDescription').value = a.description;
   document.getElementById('editImgPrincipale').value = '';
+  document.getElementById('editVideo').value = '';
   document.getElementById('editImagesSecondaires').value = '';
   document.getElementById('modalEditAnnonce').classList.remove('hidden');
 }
@@ -889,6 +893,18 @@ async function soumettreEditAnnonce(event) {
   if (imgFile) {
     if (!verifierTailleFichier(imgFile, 10)) return;
     formData.append('img_principale', imgFile);
+  }
+
+  const editVideoFile = document.getElementById('editVideo').files[0];
+  if (editVideoFile) {
+    if (!verifierTailleFichier(editVideoFile, 100)) return;
+    const extension = editVideoFile.name.split('.').pop().toLowerCase();
+    const extensionsAutorisees = ['mp4', 'webm', 'mov', 'avi'];
+    if (!extensionsAutorisees.includes(extension)) {
+      afficherToast(`❌ Format vidéo non autorisé. Extensions acceptées: ${extensionsAutorisees.join(', ')}`, 'error');
+      return;
+    }
+    formData.append('video', editVideoFile);
   }
 
   // Ajouter les images secondaires
@@ -931,15 +947,27 @@ async function supprimerAnnonce(id) {
     const response = await fetch(`/api/annonces/${id}/supprimer/`, {
       method: 'DELETE',
       headers: {
-        'X-CSRFToken': getCSRFToken()
-      }
+        'X-CSRFToken': getCSRFToken(),
+        'Cache-Control': 'no-store'
+      },
+      cache: 'no-store',
+      credentials: 'same-origin'
     });
 
     if (response.ok) {
-      await chargerAnnonces();
+      // Mettre à jour immédiatement l'affichage local
+      annonces = annonces.filter(x => x.id !== id);
+      renderAdminList();
+      renderAnnonces();
+      renderAnnoncesPage2();
+      document.getElementById('nbAnnonces').textContent = annonces.length;
       afficherToast(`Annonce #${id} supprimée.`, 'success');
+
+      // Recharger les données du serveur pour éviter tout cache stale
+      await chargerAnnonces();
     } else {
-      afficherToast('Erreur lors de la suppression', 'error');
+      const error = await response.json().catch(() => null);
+      afficherToast('Erreur lors de la suppression' + (error?.error ? `: ${error.error}` : ''), 'error');
     }
   } catch (error) {
     console.error('Erreur:', error);

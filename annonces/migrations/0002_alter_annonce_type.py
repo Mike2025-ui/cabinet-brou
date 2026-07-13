@@ -13,6 +13,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='annonce',
             name='type',
-            field=models.CharField(choices=[('terrain', 'Terrain'), ('Location de Terres', 'Location de Terres'), ('Bail Emphytéotique', 'Bail Emphytéotique'), ('commercial', 'Partenariat Agrilcole'), ('Recherche de Financement', 'Recherche de Financement')], max_length=30),
+            field=models.CharField(choices=[('terrain', 'Terrain'), ('Location de Terres', 'Location de Terres'), ('Bail Emphytéotique', 'Bail Emphytéotique'), ('Partenariat Agricole', 'Partenariat Agricole'), ('Recherche de Financement', 'Recherche de Financement'), ('Amenagement', 'Aménagement')], max_length=30),
         ),
     ]

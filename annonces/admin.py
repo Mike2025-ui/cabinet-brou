@@ -15,7 +15,6 @@ class AnnonceAdmin(admin.ModelAdmin):
     list_filter = ['type', 'est_publie']
     search_fields = ['titre', 'ville']
     inlines = [ImageInline, DocumentInline]
-    exclude = ('video',)
     
     # Champs à afficher dans le formulaire d'ajout/modification
     fieldsets = (
@@ -28,8 +27,8 @@ class AnnonceAdmin(admin.ModelAdmin):
         ('Caractéristiques', {
             'fields': ('prix', 'surface', 'description')
         }),
-        ('Image principale', {
-            'fields': ('img_principale',)
+        ('Média', {
+            'fields': ('img_principale', 'video')
         }),
         ('Note', {
             'fields': ('note',)

@@ -7,8 +7,9 @@ class Annonce(models.Model):
         ('terrain', 'Terrain'),
         ('Location de Terres', 'Location de Terres'),
         ('Bail Emphytéotique', 'Bail Emphytéotique'),
-        ('commercial', 'Partenariat Agrilcole'),
+        ('Partenariat Agricole', 'Partenariat Agricole'),
         ('Recherche de Financement', 'Recherche de Financement'),
+        ('Amenagement', 'Aménagement'),
     ]
     
     # Informations de base
